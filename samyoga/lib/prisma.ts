@@ -59,7 +59,8 @@ if (typeof window === 'undefined') {
         })
       }
     } else {
-      // PostgreSQL setup (production) - no adapter needed
+      // PostgreSQL setup (production) - Prisma 7 handles PostgreSQL natively
+      // No adapter needed for PostgreSQL
       prisma = new PrismaClient({
         log: process.env.NODE_ENV === 'development' ? ['error', 'warn'] : ['error'],
       })
