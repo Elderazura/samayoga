@@ -28,7 +28,7 @@ export async function GET() {
       orderBy: { createdAt: 'desc' },
     })
 
-    const formattedPayments = payments.map((payment) => ({
+    const formattedPayments = payments.map((payment: any) => ({
       id: payment.id,
       user: {
         name: payment.user.name,
