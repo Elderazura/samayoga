@@ -29,7 +29,7 @@ export async function GET() {
       orderBy: { createdAt: 'desc' },
     })
 
-    const formattedStudents = students.map((student) => ({
+    const formattedStudents = students.map((student: any) => ({
       id: student.id,
       name: student.name,
       email: student.email,

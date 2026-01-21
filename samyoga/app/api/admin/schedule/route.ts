@@ -24,7 +24,7 @@ export async function GET() {
       },
     })
 
-    const formattedClasses = classes.map((classItem) => ({
+    const formattedClasses = classes.map((classItem: any) => ({
       id: classItem.id,
       title: classItem.title,
       description: classItem.description,

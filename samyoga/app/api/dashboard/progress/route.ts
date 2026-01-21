@@ -35,7 +35,7 @@ export async function GET() {
     })
 
     const uniqueDays = new Set(
-      practiceDays.map((b) => b.class.date.toDateString())
+      practiceDays.map((b: any) => b.class.date.toDateString())
     ).size
 
     // Get last practice date
@@ -59,7 +59,7 @@ export async function GET() {
       classesAttended: attendedBookings,
       practiceDays: uniqueDays,
       lastPracticeDate: lastBooking?.class.date.toISOString() || null,
-      goals: progressRecords.map((p) => ({
+      goals: progressRecords.map((p: any) => ({
         metric: p.metric,
         value: p.value,
         notes: p.notes,

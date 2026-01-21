@@ -27,7 +27,7 @@ export async function GET() {
       },
     })
 
-    const classesWithBooking = classes.map((classItem) => ({
+    const classesWithBooking = classes.map((classItem: any) => ({
       id: classItem.id,
       title: classItem.title,
       description: classItem.description,
