@@ -30,7 +30,7 @@ Your code has been pushed to: https://github.com/Elderazura/samayoga.git
    DATABASE_URL=file:./prisma/dev.db
    AUTH_SECRET=<generate-a-secret-here>
    AUTH_URL=https://your-domain.vercel.app
-   GOOGLE_API_KEY=AIzaSyA2Iyn3q6Tx0Je6rA-OrPUZwSpUcVBLFqY
+   GOOGLE_API_KEY=your_google_api_key_here
    AUTH_GOOGLE_ID=<optional-if-using-google-oauth>
    AUTH_GOOGLE_SECRET=<optional-if-using-google-oauth>
    ```

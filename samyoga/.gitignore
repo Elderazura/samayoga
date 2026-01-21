@@ -28,6 +28,7 @@ yarn-error.log*
 .env*.local
 .env
 .env.local
+# Note: .env.example should be tracked (it's a template without real values)
 
 # database
 /prisma/dev.db

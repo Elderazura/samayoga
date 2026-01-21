@@ -28,7 +28,7 @@ Click **"Environment Variables"** and add:
 DATABASE_URL=file:./prisma/dev.db
 AUTH_SECRET=<generate-a-secret>
 AUTH_URL=https://your-app.vercel.app
-GOOGLE_API_KEY=AIzaSyA2Iyn3q6Tx0Je6rA-OrPUZwSpUcVBLFqY
+GOOGLE_API_KEY=your_google_api_key_here
 ```
 
 **To generate AUTH_SECRET:**
