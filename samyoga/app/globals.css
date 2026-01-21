@@ -1,0 +1,211 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 45 20% 96%;
+    --foreground: 15 20% 8%;
+  }
+  
+  * {
+    -webkit-tap-highlight-color: transparent;
+  }
+  
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    @apply bg-[#F1E7BA] text-[#1A1A1A];
+    font-family: var(--font-inter), system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    line-height: 1.7;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-inter), system-ui, sans-serif;
+    font-weight: 500;
+    line-height: 1.3;
+    letter-spacing: -0.02em;
+    color: hsl(var(--foreground));
+  }
+  
+  h1 {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 400;
+  }
+  
+  h2 {
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    font-weight: 400;
+  }
+  
+  h3 {
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    font-weight: 500;
+  }
+  
+  p {
+    line-height: 1.8;
+    color: hsl(var(--foreground) / 0.85);
+  }
+  
+  a {
+    transition: opacity 0.2s ease;
+  }
+  
+  a:hover {
+    opacity: 0.7;
+  }
+  
+  /* Touch-friendly buttons */
+  button, a {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Mobile optimizations */
+  @media (max-width: 640px) {
+    body {
+      font-size: 16px;
+      line-height: 1.6;
+    }
+    
+    h1 {
+      font-size: clamp(1.75rem, 8vw, 2.5rem);
+      line-height: 1.2;
+      margin-bottom: 1rem;
+    }
+    
+    h2 {
+      font-size: clamp(1.5rem, 6vw, 2rem);
+      line-height: 1.3;
+      margin-bottom: 0.75rem;
+    }
+    
+    h3 {
+      font-size: clamp(1.25rem, 5vw, 1.75rem);
+      line-height: 1.4;
+    }
+
+    /* Better spacing on mobile */
+    section {
+      padding-top: 2.5rem;
+      padding-bottom: 2.5rem;
+    }
+
+    /* Larger touch targets */
+    button, a[role="button"], .btn {
+      min-height: 44px;
+      min-width: 44px;
+      padding: 0.75rem 1.25rem;
+    }
+
+    /* Better mobile form inputs */
+    input, textarea, select {
+      font-size: 16px; /* Prevents zoom on iOS */
+      padding: 0.875rem 1rem;
+    }
+  }
+
+  /* Tablet optimizations (iPad) */
+  @media (min-width: 641px) and (max-width: 1024px) {
+    body {
+      font-size: 17px;
+      line-height: 1.65;
+    }
+    
+    h1 {
+      font-size: clamp(2rem, 5vw, 3rem);
+      line-height: 1.25;
+    }
+    
+    h2 {
+      font-size: clamp(1.75rem, 4vw, 2.25rem);
+      line-height: 1.3;
+    }
+
+    section {
+      padding-top: 3.5rem;
+      padding-bottom: 3.5rem;
+    }
+
+    button, a[role="button"] {
+      min-height: 48px;
+      padding: 0.875rem 1.5rem;
+    }
+  }
+  
+  /* Focus styles for accessibility */
+  *:focus-visible {
+    outline: 2px solid #E48273;
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+  
+  /* Calm accent color utilities */
+  .text-primary {
+    color: #E48273;
+  }
+  
+  .bg-cream-light {
+    background-color: #F1E7BA;
+  }
+  
+  .border-primary {
+    border-color: #E48273;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  
+  /* Disable breathing and wind animations */
+  .breathing-effect,
+  .wind-particle {
+    animation: none !important;
+    opacity: 0 !important;
+  }
+}
+
+/* Smooth scrolling */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* Custom scrollbar - subtle */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #F1E7BA;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #E48273;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #D66B5A;
+}

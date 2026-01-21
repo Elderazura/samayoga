@@ -1,0 +1,59 @@
+{
+  "images": {
+    "landscape": [
+      {
+        "id": "1",
+        "src": "/assets/images/landscape/yoga_1.jpeg",
+        "alt": "Yoga practice in a peaceful setting",
+        "caption": "Finding peace through movement"
+      },
+      {
+        "id": "2",
+        "src": "/assets/images/landscape/yoga_2.jpeg",
+        "alt": "Yoga pose demonstration",
+        "caption": "Exploring alignment and strength"
+      },
+      {
+        "id": "3",
+        "src": "/assets/images/landscape/yoga_3.jpeg",
+        "alt": "Calm yoga practice",
+        "caption": "Breathing and presence"
+      },
+      {
+        "id": "4",
+        "src": "/assets/images/landscape/yoga_4.jpeg",
+        "alt": "Yoga class session",
+        "caption": "Moving together in practice"
+      },
+      {
+        "id": "5",
+        "src": "/assets/images/landscape/yoga_5.jpeg",
+        "alt": "Yoga flow sequence",
+        "caption": "The journey of practice"
+      },
+      {
+        "id": "6",
+        "src": "/assets/images/landscape/yoga_6.jpeg",
+        "alt": "Yoga practice space",
+        "caption": "Creating space for stillness"
+      },
+      {
+        "id": "7",
+        "src": "/assets/images/landscape/yoga_7.jpeg",
+        "alt": "Yoga meditation",
+        "caption": "Inner peace and calm"
+      },
+      {
+        "id": "8",
+        "src": "/assets/images/landscape/yoga_8.jpeg",
+        "alt": "Yoga wellness practice",
+        "caption": "Wellness through yoga"
+      }
+    ],
+    "portrait": []
+  },
+  "videos": {
+    "landscape": [],
+    "portrait": []
+  }
+}

@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /dashboard/
+Disallow: /api/
+Disallow: /register/
+Disallow: /auth/
+
+Sitemap: https://samyoga.com/sitemap.xml
