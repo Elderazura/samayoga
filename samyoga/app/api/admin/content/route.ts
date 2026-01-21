@@ -20,7 +20,7 @@ export async function GET() {
       orderBy: { createdAt: 'desc' },
     })
 
-    const formattedContent = content.map((item) => ({
+    const formattedContent = content.map((item: any) => ({
       id: item.id,
       type: item.type,
       title: item.title,
