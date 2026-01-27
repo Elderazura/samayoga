@@ -271,7 +271,7 @@ export default function AdminDashboard() {
             <Card className="hover:shadow-lg transition-shadow cursor-pointer">
               <CardContent className="pt-6">
                 <Link href="/admin/creative" className="block text-center">
-                  <Image className="w-8 h-8 text-primary-700 mx-auto mb-2" />
+                  <Image className="w-8 h-8 text-primary-700 mx-auto mb-2" aria-hidden="true" />
                   <h3 className="font-medium">Creative</h3>
                   <p className="text-sm text-[#1A1A1A]/70">Generate posters</p>
                 </Link>

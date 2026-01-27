@@ -60,14 +60,14 @@ export default function Contact() {
             <CardHeader>
               <CardTitle>Send a Message</CardTitle>
               <CardDescription>
-                Fill out the form below and we'll get back to you soon.
+                Fill out the form below and we&apos;ll get back to you soon.
               </CardDescription>
             </CardHeader>
             <CardContent>
               {showSuccess && (
                 <div className="mb-6 p-4 bg-primary-50 rounded-lg border border-primary-200">
                   <p className="text-sm text-primary-800">
-                    Thank you for your message! We'll be in touch soon. 
+                    Thank you for your message! We&apos;ll be in touch soon. 
                     A mailto window should have opened as a fallback.
                   </p>
                 </div>
@@ -191,9 +191,9 @@ export default function Contact() {
               </CardHeader>
               <CardContent className="space-y-2 text-sm text-[#1A1A1A]/80">
                 <p>1. Send us a message</p>
-                <p>2. We'll respond within 24-48 hours</p>
-                <p>3. We'll schedule your session</p>
-                <p>4. You'll receive a Google Meet link</p>
+                <p>2. We&apos;ll respond within 24-48 hours</p>
+                <p>3. We&apos;ll schedule your session</p>
+                <p>4. You&apos;ll receive a Google Meet link</p>
                 <p>5. Join us for practice!</p>
               </CardContent>
             </Card>

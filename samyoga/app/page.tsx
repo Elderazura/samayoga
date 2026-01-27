@@ -4,6 +4,8 @@ import { Section } from '@/components/Section'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { CTA } from '@/components/CTA'
 import { Button } from '@/components/ui/button'
+import { VideoSection } from '@/components/VideoSection'
+import { InstagramFeed } from '@/components/InstagramFeed'
 import Link from 'next/link'
 import { Heart, Sparkles, Wind } from 'lucide-react'
 import Image from 'next/image'
@@ -32,7 +34,7 @@ export default function Home() {
           </p>
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
             <Button asChild size="lg" className="min-h-[48px] sm:min-h-[52px] text-base sm:text-lg px-6 sm:px-8">
-              <Link href="/contact">Join a Class</Link>
+              <Link href="/register">Join a Class</Link>
             </Button>
             <Button asChild variant="outline" size="lg" className="bg-white/90 hover:bg-white border-white/50 text-[#1A1A1A] min-h-[48px] sm:min-h-[52px] text-base sm:text-lg px-6 sm:px-8">
               <Link href="/about">Learn More</Link>
@@ -79,6 +81,9 @@ export default function Home() {
           </motion.div>
         </div>
       </Section>
+
+      {/* Video Section */}
+      <VideoSection videoId="https://youtu.be/GSENAaAu8QQ?si=pHgLhazvc6RzFX-U" />
 
       {/* Offerings Section */}
       <Section className="bg-white/30">
@@ -249,8 +254,8 @@ export default function Home() {
               <Card className="h-full hover:shadow-lg transition-shadow duration-300">
                 <CardContent className="pt-6">
                   <p className="text-[#1A1A1A]/80 leading-relaxed mb-4 italic">
-                    "Samyuktha's classes have helped me find balance in my busy life. 
-                    Her gentle approach makes yoga accessible and meaningful."
+                    &quot;Samyuktha&apos;s classes have helped me find balance in my busy life. 
+                    Her gentle approach makes yoga accessible and meaningful.&quot;
                   </p>
                   <p className="text-sm text-[#1A1A1A]/60">— Student Name</p>
                 </CardContent>
@@ -265,8 +270,8 @@ export default function Home() {
               <Card className="h-full hover:shadow-lg transition-shadow duration-300">
                 <CardContent className="pt-6">
                   <p className="text-[#1A1A1A]/80 leading-relaxed mb-4 italic">
-                    "I appreciate how she adapts the practice to what I need each day. 
-                    Sometimes it's movement, sometimes it's stillness—and both feel perfect."
+                    &quot;I appreciate how she adapts the practice to what I need each day. 
+                    Sometimes it&apos;s movement, sometimes it&apos;s stillness—and both feel perfect.&quot;
                   </p>
                   <p className="text-sm text-[#1A1A1A]/60">— Student Name</p>
                 </CardContent>
@@ -276,6 +281,11 @@ export default function Home() {
         </div>
       </Section>
 
+      {/* Instagram Feed */}
+      <Section>
+        <InstagramFeed />
+      </Section>
+
       {/* CTA Section */}
       <Section>
         <CTA
@@ -283,7 +293,7 @@ export default function Home() {
           description="Start your yoga journey with a gentle, grounding practice that honors where you are."
           primaryAction={{
             label: "Join a Class",
-            href: "/contact"
+            href: "/register"
           }}
           secondaryAction={{
             label: "Read the Blog",

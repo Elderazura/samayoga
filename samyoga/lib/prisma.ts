@@ -101,4 +101,4 @@ export const prisma = new Proxy({} as PrismaClient, {
     const value = (instance as any)[prop]
     return typeof value === 'function' ? value.bind(instance) : value
   }
-})
+}) as PrismaClient

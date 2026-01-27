@@ -93,7 +93,7 @@ export default function DashboardPage() {
             <CardHeader>
               <CardTitle>Getting Started</CardTitle>
               <CardDescription>
-                Your account has been approved! Here's what you can do next.
+                Your account has been approved! Here&apos;s what you can do next.
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -104,7 +104,7 @@ export default function DashboardPage() {
                 <div>
                   <h3 className="font-medium text-[#1A1A1A] mb-1">Book Your First Class</h3>
                   <p className="text-sm text-[#1A1A1A]/70">
-                    Contact us to schedule your first yoga session. We'll send you a Google Meet link.
+                    Contact us to schedule your first yoga session. We&apos;ll send you a Google Meet link.
                   </p>
                 </div>
               </div>

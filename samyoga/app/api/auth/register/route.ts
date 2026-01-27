@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import bcrypt from 'bcryptjs'
+import { ValidationError, formatErrorResponse, logError } from '@/lib/errors'
 
 export const runtime = 'nodejs'
 
@@ -9,10 +10,18 @@ export async function POST(request: Request) {
     const { email, password, name } = await request.json()
 
     if (!email || !password) {
-      return NextResponse.json(
-        { error: 'Email and password are required' },
-        { status: 400 }
-      )
+      throw new ValidationError('Email and password are required')
+    }
+
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    if (!emailRegex.test(email)) {
+      throw new ValidationError('Invalid email format')
+    }
+
+    // Validate password length
+    if (password.length < 6) {
+      throw new ValidationError('Password must be at least 6 characters')
     }
 
     // Check if user already exists
@@ -21,10 +30,7 @@ export async function POST(request: Request) {
     })
 
     if (existingUser) {
-      return NextResponse.json(
-        { error: 'User with this email already exists' },
-        { status: 400 }
-      )
+      throw new ValidationError('User with this email already exists')
     }
 
     // Hash password
@@ -45,11 +51,14 @@ export async function POST(request: Request) {
       { message: 'User created successfully', userId: user.id },
       { status: 201 }
     )
-  } catch (error: any) {
-    console.error('Registration error:', error)
+  } catch (error) {
+    logError(error, 'Registration API')
+    const errorResponse = formatErrorResponse(error)
+    const statusCode = error instanceof ValidationError ? 400 : 500
+    
     return NextResponse.json(
-      { error: 'Failed to create user' },
-      { status: 500 }
+      errorResponse,
+      { status: statusCode }
     )
   }
 }

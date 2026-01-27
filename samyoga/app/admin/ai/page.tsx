@@ -134,7 +134,7 @@ export default function AIPanel() {
                   <div className="text-center text-[#1A1A1A]/60 py-8">
                     <Bot className="w-12 h-12 mx-auto mb-4 text-primary-400" />
                     <p>Start a conversation with the AI assistant</p>
-                    <p className="text-sm mt-2">Try: "How many students are registered?" or "Show me upcoming classes"</p>
+                    <p className="text-sm mt-2">Try: &quot;How many students are registered?&quot; or &quot;Show me upcoming classes&quot;</p>
                   </div>
                 )}
                 {messages.map((message, index) => (

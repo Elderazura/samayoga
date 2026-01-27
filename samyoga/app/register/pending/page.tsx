@@ -65,7 +65,7 @@ export default function PendingApprovalPage() {
                     <span className="flex-shrink-0 w-6 h-6 rounded-full bg-primary-200 flex items-center justify-center text-xs font-medium text-primary-700">
                       2
                     </span>
-                    <span>You'll receive an email notification once your account is approved</span>
+                    <span>You&apos;ll receive an email notification once your account is approved</span>
                   </li>
                   <li className="flex items-start gap-3">
                     <span className="flex-shrink-0 w-6 h-6 rounded-full bg-primary-200 flex items-center justify-center text-xs font-medium text-primary-700">
@@ -78,7 +78,7 @@ export default function PendingApprovalPage() {
 
               <div className="pt-4 border-t border-primary-200">
                 <p className="text-sm text-[#1A1A1A]/70 text-center">
-                  This usually takes 24-48 hours. We'll notify you as soon as your account is ready!
+                  This usually takes 24-48 hours. We&apos;ll notify you as soon as your account is ready!
                 </p>
               </div>
             </CardContent>

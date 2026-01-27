@@ -183,15 +183,16 @@ export default function CreativePanel() {
                       <CardContent className="pt-6">
                         {poster.imageUrl ? (
                           <div className="aspect-[4/5] rounded-lg overflow-hidden mb-4 bg-primary-50">
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
                             <img
                               src={poster.imageUrl}
-                              alt={poster.title}
+                              alt={poster.title || 'Generated poster'}
                               className="w-full h-full object-cover"
                             />
                           </div>
                         ) : (
                           <div className="aspect-[4/5] bg-primary-50/50 rounded-lg flex items-center justify-center mb-4">
-                            <Image className="w-12 h-12 text-primary-400" />
+                            <Image className="w-12 h-12 text-primary-400" aria-hidden="true" />
                           </div>
                         )}
                         <h3 className="font-medium mb-2">{poster.title}</h3>

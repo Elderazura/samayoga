@@ -3,9 +3,25 @@
 import { PageHeader } from '@/components/PageHeader'
 import { Section } from '@/components/Section'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Testimonials } from '@/components/Testimonials'
+import { InstagramFeed } from '@/components/InstagramFeed'
 import mediaData from '@/src/content/media/media.json'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
+import type { MediaVideo } from '@/types/database'
+
+interface MediaData {
+  images: {
+    landscape: Array<{ id: string; src: string; alt: string; caption?: string }>
+    portrait: Array<{ id: string; src: string; alt: string; caption?: string }>
+  }
+  videos: {
+    landscape: MediaVideo[]
+    portrait: MediaVideo[]
+  }
+}
+
+const typedMediaData = mediaData as MediaData
 
 export default function Media() {
   return (
@@ -23,7 +39,7 @@ export default function Media() {
         <div className="mb-12">
           <h3 className="text-xl font-medium mb-6">Gallery Images</h3>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {mediaData.images.landscape.map((image, index) => (
+            {typedMediaData.images.landscape.map((image, index) => (
               <motion.div
                 key={image.id}
                 initial={{ opacity: 0, y: 30 }}
@@ -54,16 +70,17 @@ export default function Media() {
       </Section>
 
       {/* Video Section */}
-      {mediaData.videos && (mediaData.videos.landscape.length > 0 || mediaData.videos.portrait.length > 0) && (
+      {typedMediaData.videos && 
+       (typedMediaData.videos.landscape?.length > 0 || typedMediaData.videos.portrait?.length > 0) && (
         <Section className="bg-white/30">
           <h2 className="text-3xl font-light mb-8 text-center">Videos</h2>
           
           {/* Landscape Videos */}
-          {mediaData.videos.landscape.length > 0 && (
+          {typedMediaData.videos.landscape && typedMediaData.videos.landscape.length > 0 && (
             <div className="mb-12">
               <h3 className="text-xl font-medium mb-6">Video Content</h3>
               <div className="grid md:grid-cols-2 gap-6">
-                {mediaData.videos.landscape.map((video: any) => (
+                {typedMediaData.videos.landscape.map((video) => (
                   <Card key={video.id} className="overflow-hidden">
                     <div className="aspect-video bg-primary-50/50 flex items-center justify-center">
                       <div className="text-center p-8">
@@ -82,11 +99,11 @@ export default function Media() {
           )}
 
           {/* Portrait Videos */}
-          {mediaData.videos.portrait.length > 0 && (
+          {typedMediaData.videos.portrait && typedMediaData.videos.portrait.length > 0 && (
             <div className="mb-12">
               <h3 className="text-xl font-medium mb-6">Portrait Videos</h3>
               <div className="grid md:grid-cols-2 gap-6">
-                {mediaData.videos.portrait.map((video: any) => (
+                {typedMediaData.videos.portrait.map((video) => (
                   <Card key={video.id} className="overflow-hidden">
                     <div className="aspect-[4/5] bg-primary-50/50 flex items-center justify-center">
                       <div className="text-center p-8">
@@ -105,6 +122,16 @@ export default function Media() {
           )}
         </Section>
       )}
+
+      {/* Testimonials */}
+      <Section className="bg-white/30">
+        <Testimonials />
+      </Section>
+
+      {/* Instagram Feed */}
+      <Section>
+        <InstagramFeed />
+      </Section>
     </>
   )
 }

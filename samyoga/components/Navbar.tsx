@@ -12,6 +12,7 @@ const navigation = [
   { name: 'Media', href: '/media' },
   { name: 'Blog', href: '/blog' },
   { name: 'Contact', href: '/contact' },
+  { name: 'Register', href: '/register', showWhenLoggedIn: false },
 ]
 
 export function Navbar() {
@@ -20,7 +21,7 @@ export function Navbar() {
 
   return (
     <nav
-      className="sticky top-0 z-50 bg-cream-50/80 backdrop-blur-md border-b border-primary-200/30 supports-[backdrop-filter]:bg-cream-50/80"
+      className="sticky top-0 z-50 bg-primary-100/90 backdrop-blur-md border-b border-primary-200/40 supports-[backdrop-filter]:bg-primary-100/90"
       role="navigation"
       aria-label="Main navigation"
     >
@@ -37,22 +38,28 @@ export function Navbar() {
               alt="Samayoga Logo"
               width={120}
               height={40}
-              className="h-8 sm:h-10 w-auto"
+              className="h-8 sm:h-10 w-auto brightness-0 contrast-125"
               priority
             />
           </Link>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
-            {navigation.map((item) => (
-              <Link
-                key={item.name}
-                href={item.href}
-                className="text-[#1A1A1A]/80 hover:text-primary-600 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 rounded-md px-2"
-              >
-                {item.name}
-              </Link>
-            ))}
+            {navigation.map((item) => {
+              // Hide Register if logged in
+              if (item.name === 'Register' && status === 'authenticated') {
+                return null
+              }
+              return (
+                <Link
+                  key={item.name}
+                  href={item.href}
+                  className="text-[#1A1A1A]/80 hover:text-primary-700 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 rounded-md px-2"
+                >
+                  {item.name}
+                </Link>
+              )
+            })}
             {status === 'authenticated' ? (
               <div className="flex items-center gap-4">
                 {session?.user?.role === 'ADMIN' && (
@@ -110,7 +117,7 @@ export function Navbar() {
       {mobileMenuOpen && (
         <div
           id="mobile-menu"
-          className="md:hidden border-t border-primary-200/30 bg-cream-50/95 backdrop-blur-md"
+          className="md:hidden border-t border-primary-200/40 bg-primary-100/95 backdrop-blur-md"
         >
           <div className="px-4 py-4 space-y-3">
             {navigation.map((item) => (

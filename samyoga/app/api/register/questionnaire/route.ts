@@ -1,54 +1,78 @@
 import { NextResponse } from 'next/server'
 import { auth } from '@/auth'
 import { prisma } from '@/lib/prisma'
+import { UnauthorizedError, formatErrorResponse, logError } from '@/lib/errors'
+import type { QuestionnaireData } from '@/types/database'
 
 export const runtime = 'nodejs'
 
 export async function POST(request: Request) {
   try {
-    const session = await auth()
-
-    if (!session?.user?.id) {
-      return NextResponse.json(
-        { error: 'Unauthorized' },
-        { status: 401 }
-      )
+    const data: QuestionnaireData = await request.json()
+    
+    // If userId is provided (from registration), use it; otherwise require auth
+    let userId: string
+    
+    if (data.userId) {
+      userId = data.userId
+    } else {
+      const session = await auth()
+      if (!session?.user?.id) {
+        throw new UnauthorizedError()
+      }
+      userId = session.user.id
     }
 
-    const data = await request.json()
+    // Store new fields in additionalInfo as JSON, or use existing fields
+    const additionalInfo = {
+      height: data.height || null,
+      weight: data.weight || null,
+      phone: data.phone || null,
+      classType: data.classType || null,
+      preferredTimeSlot: data.preferredTimeSlot || null,
+      yogaExperience: data.yogaExperience || null,
+      healthIssues: data.healthIssues || null,
+      // Keep existing fields
+      experience: data.experience || null,
+      goals: data.goals || null,
+      injuries: data.injuries || null,
+      preferences: data.preferences || null,
+      availability: data.availability || null,
+    }
 
     // Create or update registration
     await prisma.registration.upsert({
-      where: { userId: session.user.id },
+      where: { userId },
       update: {
-        experience: data.experience || null,
-        goals: data.goals || null,
-        injuries: data.injuries || null,
-        preferences: data.preferences || null,
-        availability: data.availability || null,
-        additionalInfo: data.additionalInfo || null,
+        experience: data.experience || data.yogaExperience || null,
+        injuries: data.injuries || data.healthIssues || null,
+        preferences: data.preferences || data.classType || null,
+        availability: data.availability || data.preferredTimeSlot || null,
+        additionalInfo: JSON.stringify(additionalInfo),
         submittedAt: new Date(),
       },
       create: {
-        userId: session.user.id,
-        experience: data.experience || null,
-        goals: data.goals || null,
-        injuries: data.injuries || null,
-        preferences: data.preferences || null,
-        availability: data.availability || null,
-        additionalInfo: data.additionalInfo || null,
+        userId,
+        experience: data.experience || data.yogaExperience || null,
+        injuries: data.injuries || data.healthIssues || null,
+        preferences: data.preferences || data.classType || null,
+        availability: data.availability || data.preferredTimeSlot || null,
+        additionalInfo: JSON.stringify(additionalInfo),
       },
     })
 
     return NextResponse.json(
-      { message: 'Questionnaire submitted successfully' },
+      { message: 'Registration submitted successfully' },
       { status: 200 }
     )
-  } catch (error: any) {
-    console.error('Questionnaire submission error:', error)
+  } catch (error) {
+    logError(error, 'Questionnaire API')
+    const errorResponse = formatErrorResponse(error)
+    const statusCode = error instanceof UnauthorizedError ? 401 : 500
+    
     return NextResponse.json(
-      { error: 'Failed to submit questionnaire' },
-      { status: 500 }
+      errorResponse,
+      { status: statusCode }
     )
   }
 }
