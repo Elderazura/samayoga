@@ -49,8 +49,11 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
             return null
           }
 
+          // Normalize email to lowercase for case-insensitive lookup
+          const normalizedEmail = (credentials.email as string).toLowerCase().trim()
+          
           const user = await prismaInstance.user.findUnique({
-            where: { email: credentials.email as string },
+            where: { email: normalizedEmail },
           })
 
           if (!user) {
