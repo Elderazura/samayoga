@@ -3,6 +3,16 @@ import { PrismaBetterSqlite3 } from '@prisma/adapter-better-sqlite3'
 import path from 'path'
 import fs from 'fs'
 
+// Ensure DATABASE_URL is available for Prisma
+if (typeof process !== 'undefined' && !process.env.DATABASE_URL && typeof window === 'undefined') {
+  // Try to load from .env.local if in Node.js environment
+  try {
+    require('dotenv').config({ path: '.env.local' })
+  } catch {
+    // Ignore if dotenv is not available or file doesn't exist
+  }
+}
+
 const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined
 }
@@ -63,9 +73,12 @@ function getPrisma(): PrismaClient {
         throw new Error('DATABASE_URL environment variable is not set')
       }
       
+      // For Prisma 7 with PostgreSQL, we need to ensure the connection URL is available
+      // The URL is read from process.env.DATABASE_URL automatically
+      // We don't need an adapter for PostgreSQL - it uses the native driver
       globalForPrisma.prisma = new PrismaClient({
         log: process.env.NODE_ENV === 'development' ? ['error', 'warn'] : ['error'],
-      })
+      }) as PrismaClient
     }
   }
   

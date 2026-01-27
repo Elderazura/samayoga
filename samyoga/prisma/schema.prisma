@@ -3,7 +3,6 @@
 
 generator client {
   provider = "prisma-client-js"
-  engineType = "library"
 }
 
 // In Prisma 7, the connection URL is set in prisma.config.ts, not here.
