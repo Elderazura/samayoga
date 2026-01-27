@@ -57,14 +57,13 @@ function getPrisma(): PrismaClient {
       }
     } else {
       // PostgreSQL setup (production/Supabase)
-      // For Prisma 7, we need to explicitly set the datasource URL
       // DATABASE_URL is automatically read from process.env by Prisma
+      // Ensure DATABASE_URL is set in the environment
+      if (!process.env.DATABASE_URL) {
+        throw new Error('DATABASE_URL environment variable is not set')
+      }
+      
       globalForPrisma.prisma = new PrismaClient({
-        datasources: {
-          db: {
-            url: databaseUrl,
-          },
-        },
         log: process.env.NODE_ENV === 'development' ? ['error', 'warn'] : ['error'],
       })
     }
