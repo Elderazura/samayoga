@@ -11,9 +11,25 @@ let prisma: PrismaClient | undefined
 let adapter: Adapter | undefined
 
 function getPrisma() {
-  if (!prisma && typeof window === 'undefined') {
-    const { prisma: p } = require('./lib/prisma')
-    prisma = p
+  if (typeof window !== 'undefined') {
+    return undefined
+  }
+  
+  if (!prisma) {
+    try {
+      // Import prisma directly - it's already a lazy proxy
+      const prismaModule = require('./lib/prisma')
+      prisma = prismaModule.prisma
+      
+      // Verify it's actually a PrismaClient instance
+      if (!prisma || typeof prisma.user === 'undefined') {
+        console.error('[Auth] Prisma client is not properly initialized')
+        return undefined
+      }
+    } catch (error: any) {
+      console.error('[Auth] Error loading Prisma:', error.message)
+      return undefined
+    }
   }
   return prisma
 }
