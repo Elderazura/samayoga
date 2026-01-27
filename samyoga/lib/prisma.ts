@@ -56,8 +56,15 @@ function getPrisma(): PrismaClient {
         })
       }
     } else {
-      // PostgreSQL setup (production)
+      // PostgreSQL setup (production/Supabase)
+      // For Prisma 7, we need to explicitly set the datasource URL
+      // DATABASE_URL is automatically read from process.env by Prisma
       globalForPrisma.prisma = new PrismaClient({
+        datasources: {
+          db: {
+            url: databaseUrl,
+          },
+        },
         log: process.env.NODE_ENV === 'development' ? ['error', 'warn'] : ['error'],
       })
     }
@@ -70,6 +77,7 @@ function getPrisma(): PrismaClient {
 export const prisma = new Proxy({} as PrismaClient, {
   get(_target, prop) {
     const instance = getPrisma()
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const value = (instance as any)[prop]
     return typeof value === 'function' ? value.bind(instance) : value
   }
