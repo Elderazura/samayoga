@@ -26,7 +26,10 @@ function getPrisma(): PrismaClient {
   }
 
   if (!globalForPrisma.prisma) {
-    const databaseUrl = process.env.DATABASE_URL || 'file:./prisma/dev.db'
+    const databaseUrl = process.env.DATABASE_URL
+    if (!databaseUrl) {
+      throw new Error('DATABASE_URL environment variable is not set')
+    }
     
     // Check if using PostgreSQL (production) or SQLite (development)
     const isPostgres = databaseUrl.startsWith('postgresql://') || databaseUrl.startsWith('postgres://')
@@ -70,23 +73,29 @@ function getPrisma(): PrismaClient {
     } else {
       // PostgreSQL setup (production/Supabase)
       // For Prisma 7, we need to use the PostgreSQL adapter
-      if (!process.env.DATABASE_URL) {
-        throw new Error('DATABASE_URL environment variable is not set')
+      try {
+        // Create a connection pool for PostgreSQL
+        const pool = new Pool({
+          connectionString: databaseUrl,
+          max: 1, // Limit connections for serverless
+          idleTimeoutMillis: 30000,
+          connectionTimeoutMillis: 10000,
+        })
+        
+        // Create the PostgreSQL adapter
+        const adapter = new PrismaPg(pool)
+        
+        // Initialize Prisma Client with the adapter
+        globalForPrisma.prisma = new PrismaClient({
+          adapter,
+          log: process.env.NODE_ENV === 'development' ? ['error', 'warn'] : ['error'],
+        })
+        
+        console.log('[Prisma] PostgreSQL client initialized with adapter')
+      } catch (error: any) {
+        console.error('[Prisma] Error initializing PostgreSQL client:', error.message)
+        throw error
       }
-      
-      // Create a connection pool for PostgreSQL
-      const pool = new Pool({
-        connectionString: process.env.DATABASE_URL,
-      })
-      
-      // Create the PostgreSQL adapter
-      const adapter = new PrismaPg(pool)
-      
-      // Initialize Prisma Client with the adapter
-      globalForPrisma.prisma = new PrismaClient({
-        adapter,
-        log: process.env.NODE_ENV === 'development' ? ['error', 'warn'] : ['error'],
-      })
     }
   }
   
