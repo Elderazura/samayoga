@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { auth } from '@/auth'
-import { prisma } from '@/lib/prisma'
+import { supabase } from '@/lib/supabase'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
@@ -16,17 +16,22 @@ export async function GET() {
       )
     }
 
-    const content = await prisma.content.findMany({
-      orderBy: { createdAt: 'desc' },
-    })
+    const { data: content, error } = await supabase
+      .from('Content')
+      .select('*')
+      .order('createdAt', { ascending: false })
 
-    const formattedContent = content.map((item: any) => ({
+    if (error) {
+      throw new Error(`Failed to fetch content: ${error.message}`)
+    }
+
+    const formattedContent = (content || []).map((item: any) => ({
       id: item.id,
       type: item.type,
       title: item.title,
       published: item.published,
-      publishedAt: item.publishedAt?.toISOString() || null,
-      createdAt: item.createdAt.toISOString(),
+      publishedAt: item.publishedAt || null,
+      createdAt: item.createdAt,
     }))
 
     return NextResponse.json(formattedContent)

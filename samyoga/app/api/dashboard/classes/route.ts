@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { auth } from '@/auth'
-import { prisma } from '@/lib/prisma'
+import { supabase } from '@/lib/supabase'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
@@ -16,27 +16,41 @@ export async function GET() {
       )
     }
 
-    // Get all classes with user's booking status
-    const classes = await prisma.class.findMany({
-      orderBy: { date: 'asc' },
-      include: {
-        bookings: {
-          where: { userId: session.user.id },
-          select: { status: true },
-        },
-      },
-    })
+    // Get all classes
+    const { data: classes, error: classesError } = await supabase
+      .from('Class')
+      .select('*')
+      .order('date', { ascending: true })
 
-    const classesWithBooking = classes.map((classItem: any) => ({
+    if (classesError) {
+      throw new Error(`Failed to fetch classes: ${classesError.message}`)
+    }
+
+    // Get user's bookings separately for better query
+    const { data: userBookings, error: bookingsError } = await supabase
+      .from('Booking')
+      .select('classId, status')
+      .eq('userId', session.user.id)
+
+    if (bookingsError) {
+      throw new Error(`Failed to fetch bookings: ${bookingsError.message}`)
+    }
+
+    const bookingMap = new Map(
+      (userBookings || []).map((b: any) => [b.classId, b.status])
+    )
+
+    // Format classes with booking status
+    const classesWithBooking = (classes || []).map((classItem: any) => ({
       id: classItem.id,
       title: classItem.title,
       description: classItem.description,
       type: classItem.type,
-      date: classItem.date.toISOString(),
+      date: classItem.date,
       duration: classItem.duration,
       meetLink: classItem.meetLink,
       status: classItem.status,
-      bookingStatus: classItem.bookings[0]?.status || null,
+      bookingStatus: bookingMap.get(classItem.id) || null,
     }))
 
     return NextResponse.json(classesWithBooking)

@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { auth } from '@/auth'
-import { prisma } from '@/lib/prisma'
+import { supabase } from '@/lib/supabase'
 
 export const runtime = 'nodejs'
 
@@ -25,21 +25,33 @@ export async function POST(request: Request) {
     }
 
     // Update user status
-    const user = await prisma.user.update({
-      where: { id: userId },
-      data: {
+    const { data: user, error: userError } = await supabase
+      .from('User')
+      .update({
         status: approved ? 'APPROVED' : 'REJECTED',
-      },
-    })
+        updatedAt: new Date().toISOString(),
+      })
+      .eq('id', userId)
+      .select()
+      .single()
+
+    if (userError) {
+      throw new Error(`Failed to update user: ${userError.message}`)
+    }
 
     // Update registration review info
-    await prisma.registration.updateMany({
-      where: { userId },
-      data: {
-        reviewedAt: new Date(),
+    const { error: regError } = await supabase
+      .from('Registration')
+      .update({
+        reviewedAt: new Date().toISOString(),
         reviewedBy: session.user.id,
-      },
-    })
+      })
+      .eq('userId', userId)
+
+    if (regError) {
+      console.warn('Failed to update registration review info:', regError.message)
+      // Don't fail the request if this fails
+    }
 
     return NextResponse.json({
       message: `User ${approved ? 'approved' : 'rejected'} successfully`,

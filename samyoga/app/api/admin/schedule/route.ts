@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { auth } from '@/auth'
-import { prisma } from '@/lib/prisma'
+import { supabase } from '@/lib/supabase'
 
 export const runtime = 'nodejs'
 
@@ -15,26 +15,31 @@ export async function GET() {
       )
     }
 
-    const classes = await prisma.class.findMany({
-      orderBy: { date: 'desc' },
-      include: {
-        _count: {
-          select: { bookings: true },
-        },
-      },
-    })
+    // Fetch classes with booking counts
+    const { data: classes, error } = await supabase
+      .from('Class')
+      .select(`
+        *,
+        bookings:Booking(count)
+      `)
+      .order('date', { ascending: false })
 
-    const formattedClasses = classes.map((classItem: any) => ({
+    if (error) {
+      throw new Error(`Failed to fetch classes: ${error.message}`)
+    }
+
+    // Format classes
+    const formattedClasses = (classes || []).map((classItem: any) => ({
       id: classItem.id,
       title: classItem.title,
       description: classItem.description,
       type: classItem.type,
-      date: classItem.date.toISOString(),
+      date: classItem.date,
       duration: classItem.duration,
       meetLink: classItem.meetLink,
       maxStudents: classItem.maxStudents,
       status: classItem.status,
-      bookingsCount: classItem._count.bookings,
+      bookingsCount: classItem.bookings?.[0]?.count || 0,
     }))
 
     return NextResponse.json(formattedClasses)
@@ -60,19 +65,25 @@ export async function POST(request: Request) {
 
     const data = await request.json()
 
-    const classItem = await prisma.class.create({
-      data: {
+    const { data: classItem, error } = await supabase
+      .from('Class')
+      .insert({
         title: data.title,
         description: data.description || null,
         type: data.type,
         instructor: 'Samyuktha Nambiar',
-        date: new Date(data.date),
+        date: data.date,
         duration: data.duration,
         meetLink: data.meetLink || null,
         maxStudents: data.maxStudents,
         status: 'SCHEDULED',
-      },
-    })
+      })
+      .select()
+      .single()
+
+    if (error) {
+      throw new Error(`Failed to create class: ${error.message}`)
+    }
 
     return NextResponse.json(classItem, { status: 201 })
   } catch (error: any) {

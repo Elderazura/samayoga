@@ -1,7 +1,19 @@
-import { PrismaClient } from '@prisma/client'
 import bcrypt from 'bcryptjs'
+import { config } from 'dotenv'
 
-const prisma = new PrismaClient()
+// Load environment variables from .env.local FIRST, before importing prisma
+config({ path: '.env.local' })
+
+// Verify DATABASE_URL is set
+if (!process.env.DATABASE_URL) {
+  console.error('❌ Error: DATABASE_URL is not set in .env.local')
+  console.error('Please ensure .env.local contains your Supabase connection string.')
+  process.exit(1)
+}
+
+// Import prisma after environment is loaded
+// This uses the Prisma client from lib/prisma.ts which handles connection properly
+const { prisma } = require('../lib/prisma')
 
 async function main() {
   const email = process.env.ADMIN_EMAIL || 'admin@samayoga.com'

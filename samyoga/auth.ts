@@ -1,51 +1,9 @@
 import NextAuth from 'next-auth'
 import Credentials from 'next-auth/providers/credentials'
-import { PrismaAdapter } from '@auth/prisma-adapter'
 import bcrypt from 'bcryptjs'
-
-// Lazy load Prisma to avoid Edge runtime issues
-import type { PrismaClient } from '@prisma/client'
-import type { Adapter } from 'next-auth/adapters'
-
-let prisma: PrismaClient | undefined
-let adapter: Adapter | undefined
-
-function getPrisma() {
-  if (typeof window !== 'undefined') {
-    return undefined
-  }
-  
-  if (!prisma) {
-    try {
-      // Import prisma directly - it's already a lazy proxy
-      const prismaModule = require('./lib/prisma')
-      prisma = prismaModule.prisma
-      
-      // Verify it's actually a PrismaClient instance
-      if (!prisma || typeof prisma.user === 'undefined') {
-        console.error('[Auth] Prisma client is not properly initialized')
-        return undefined
-      }
-    } catch (error: any) {
-      console.error('[Auth] Error loading Prisma:', error.message)
-      return undefined
-    }
-  }
-  return prisma
-}
-
-function getAdapter(): Adapter | undefined {
-  if (!adapter && process.env.DATABASE_URL && typeof window === 'undefined') {
-    const prismaInstance = getPrisma()
-    if (prismaInstance) {
-      adapter = PrismaAdapter(prismaInstance) as Adapter
-    }
-  }
-  return adapter
-}
+import { supabase } from './lib/supabase'
 
 export const { auth, handlers, signIn, signOut } = NextAuth({
-  adapter: getAdapter(),
   providers: [
     Credentials({
       credentials: {
@@ -59,21 +17,18 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
             return null
           }
 
-          const prismaInstance = getPrisma()
-          if (!prismaInstance) {
-            console.error('[Auth] Prisma instance not available')
-            return null
-          }
-
           // Normalize email to lowercase for case-insensitive lookup
           const normalizedEmail = (credentials.email as string).toLowerCase().trim()
           
-          const user = await prismaInstance.user.findUnique({
-            where: { email: normalizedEmail },
-          })
+          // Query user from Supabase
+          const { data: user, error } = await supabase
+            .from('User')
+            .select('id, email, name, image, password, role, status')
+            .eq('email', normalizedEmail)
+            .single()
 
-          if (!user) {
-            console.error(`[Auth] User not found: ${credentials.email}`)
+          if (error || !user) {
+            console.error(`[Auth] User not found: ${credentials.email}`, error?.message)
             return null
           }
 

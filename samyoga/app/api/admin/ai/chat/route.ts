@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { auth } from '@/auth'
-import { prisma } from '@/lib/prisma'
+import { supabase } from '@/lib/supabase'
 import { GoogleGenerativeAI } from '@google/generative-ai'
 
 export const runtime = 'nodejs'
@@ -27,34 +27,46 @@ export async function POST(request: Request) {
     }
 
     // Store conversation in memory
-    await prisma.aIMemory.upsert({
-      where: { key: `conversation_${session.user.id}_latest` },
-      update: {
+    const memoryKey = `conversation_${session.user.id}_latest`
+    await supabase
+      .from('AIMemory')
+      .upsert({
+        key: memoryKey,
         value: message,
         context: JSON.stringify({ timestamp: new Date().toISOString() }),
-      },
-      create: {
-        key: `conversation_${session.user.id}_latest`,
-        value: message,
-        context: JSON.stringify({ timestamp: new Date().toISOString() }),
-      },
-    })
+      }, {
+        onConflict: 'key',
+      })
 
     // Get context from database for better responses
-    const studentCount = await prisma.user.count({ where: { role: 'STUDENT' } })
-    const classCount = await prisma.class.count({ where: { status: 'SCHEDULED' } })
-    const pendingPayments = await prisma.payment.count({ where: { status: 'PENDING' } })
-    const approvedStudents = await prisma.user.count({ 
-      where: { role: 'STUDENT', status: 'APPROVED' } 
-    })
+    const { count: studentCount } = await supabase
+      .from('User')
+      .select('*', { count: 'exact', head: true })
+      .eq('role', 'STUDENT')
+
+    const { count: classCount } = await supabase
+      .from('Class')
+      .select('*', { count: 'exact', head: true })
+      .eq('status', 'SCHEDULED')
+
+    const { count: pendingPayments } = await supabase
+      .from('Payment')
+      .select('*', { count: 'exact', head: true })
+      .eq('status', 'PENDING')
+
+    const { count: approvedStudents } = await supabase
+      .from('User')
+      .select('*', { count: 'exact', head: true })
+      .eq('role', 'STUDENT')
+      .eq('status', 'APPROVED')
 
     // Build system context
     const systemContext = `You are an AI assistant for Samyoga, a yoga studio run by Samyuktha Nambiar. 
 You help with administrative tasks. Here's the current system status:
-- Total students: ${studentCount}
-- Approved students: ${approvedStudents}
-- Scheduled classes: ${classCount}
-- Pending payments: ${pendingPayments}
+- Total students: ${studentCount || 0}
+- Approved students: ${approvedStudents || 0}
+- Scheduled classes: ${classCount || 0}
+- Pending payments: ${pendingPayments || 0}
 
 You can help with:
 - Student management and information
@@ -72,15 +84,15 @@ Be helpful, professional, and concise.`
       const lowerMessage = message.toLowerCase()
       
       if (lowerMessage.includes('student') || lowerMessage.includes('students')) {
-        response += `I found ${studentCount} students in the system. `
+        response += `I found ${studentCount || 0} students in the system. `
       }
       
       if (lowerMessage.includes('class') || lowerMessage.includes('classes')) {
-        response += `There are ${classCount} scheduled classes. `
+        response += `There are ${classCount || 0} scheduled classes. `
       }
       
       if (lowerMessage.includes('payment') || lowerMessage.includes('payments')) {
-        response += `There are ${pendingPayments} pending payments. `
+        response += `There are ${pendingPayments || 0} pending payments. `
       }
       
       if (!response.includes('found') && !response.includes('There are')) {
@@ -88,24 +100,19 @@ Be helpful, professional, and concise.`
       }
 
       // Store response in memory
-      await prisma.aIMemory.upsert({
-        where: { key: `conversation_${session.user.id}_response_${Date.now()}` },
-        update: {
+      const responseKey = `conversation_${session.user.id}_response_${Date.now()}`
+      await supabase
+        .from('AIMemory')
+        .upsert({
+          key: responseKey,
           value: response,
           context: JSON.stringify({ 
             timestamp: new Date().toISOString(),
             userMessage: message,
           }),
-        },
-        create: {
-          key: `conversation_${session.user.id}_response_${Date.now()}`,
-          value: response,
-          context: JSON.stringify({ 
-            timestamp: new Date().toISOString(),
-            userMessage: message,
-          }),
-        },
-      })
+        }, {
+          onConflict: 'key',
+        })
 
       return NextResponse.json({ response })
     }
@@ -132,24 +139,19 @@ Be helpful, professional, and concise.`
     const responseText = response.text()
 
     // Store response in memory
-    await prisma.aIMemory.upsert({
-      where: { key: `conversation_${session.user.id}_response_${Date.now()}` },
-      update: {
+    const responseKey = `conversation_${session.user.id}_response_${Date.now()}`
+    await supabase
+      .from('AIMemory')
+      .upsert({
+        key: responseKey,
         value: responseText,
         context: JSON.stringify({ 
           timestamp: new Date().toISOString(),
           userMessage: message,
         }),
-      },
-      create: {
-        key: `conversation_${session.user.id}_response_${Date.now()}`,
-        value: responseText,
-        context: JSON.stringify({ 
-          timestamp: new Date().toISOString(),
-          userMessage: message,
-        }),
-      },
-    })
+      }, {
+        onConflict: 'key',
+      })
 
     return NextResponse.json({ response: responseText })
   } catch (error: any) {

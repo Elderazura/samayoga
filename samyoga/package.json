@@ -4,19 +4,15 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "prisma generate && next build",
+    "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "create-admin": "tsx scripts/create-admin-simple.ts",
-    "postinstall": "prisma generate"
+    "create-admin": "tsx scripts/create-admin-supabase.ts"
   },
   "dependencies": {
-    "@auth/prisma-adapter": "^2.11.1",
     "@google/generative-ai": "^0.24.1",
-    "@prisma/adapter-better-sqlite3": "^7.2.0",
-    "@prisma/adapter-pg": "^7.3.0",
-    "@prisma/client": "^7.2.0",
     "@radix-ui/react-slot": "^1.0.2",
+    "@supabase/supabase-js": "^2.93.1",
     "bcryptjs": "^3.0.3",
     "better-sqlite3": "^12.6.2",
     "class-variance-authority": "^0.7.0",
@@ -28,7 +24,6 @@
     "next": "^14.0.0",
     "next-auth": "^5.0.0-beta.30",
     "pg": "^8.17.2",
-    "prisma": "^7.2.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-markdown": "^10.1.0",

@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { auth } from '@/auth'
-import { prisma } from '@/lib/prisma'
+import { supabase } from '@/lib/supabase'
 import { UnauthorizedError, formatErrorResponse, logError } from '@/lib/errors'
 import type { QuestionnaireData } from '@/types/database'
 
@@ -40,26 +40,47 @@ export async function POST(request: Request) {
       availability: data.availability || null,
     }
 
-    // Create or update registration
-    await prisma.registration.upsert({
-      where: { userId },
-      update: {
-        experience: data.experience || data.yogaExperience || null,
-        injuries: data.injuries || data.healthIssues || null,
-        preferences: data.preferences || data.classType || null,
-        availability: data.availability || data.preferredTimeSlot || null,
-        additionalInfo: JSON.stringify(additionalInfo),
-        submittedAt: new Date(),
-      },
-      create: {
-        userId,
-        experience: data.experience || data.yogaExperience || null,
-        injuries: data.injuries || data.healthIssues || null,
-        preferences: data.preferences || data.classType || null,
-        availability: data.availability || data.preferredTimeSlot || null,
-        additionalInfo: JSON.stringify(additionalInfo),
-      },
-    })
+    // Check if registration exists
+    const { data: existing } = await supabase
+      .from('Registration')
+      .select('id')
+      .eq('userId', userId)
+      .single()
+
+    if (existing) {
+      // Update existing registration
+      const { error } = await supabase
+        .from('Registration')
+        .update({
+          experience: data.experience || data.yogaExperience || null,
+          injuries: data.injuries || data.healthIssues || null,
+          preferences: data.preferences || data.classType || null,
+          availability: data.availability || data.preferredTimeSlot || null,
+          additionalInfo: JSON.stringify(additionalInfo),
+          submittedAt: new Date().toISOString(),
+        })
+        .eq('userId', userId)
+
+      if (error) {
+        throw new Error(`Failed to update registration: ${error.message}`)
+      }
+    } else {
+      // Create new registration
+      const { error } = await supabase
+        .from('Registration')
+        .insert({
+          userId,
+          experience: data.experience || data.yogaExperience || null,
+          injuries: data.injuries || data.healthIssues || null,
+          preferences: data.preferences || data.classType || null,
+          availability: data.availability || data.preferredTimeSlot || null,
+          additionalInfo: JSON.stringify(additionalInfo),
+        })
+
+      if (error) {
+        throw new Error(`Failed to create registration: ${error.message}`)
+      }
+    }
 
     return NextResponse.json(
       { message: 'Registration submitted successfully' },

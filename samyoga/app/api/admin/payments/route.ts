@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { auth } from '@/auth'
-import { prisma } from '@/lib/prisma'
+import { supabase } from '@/lib/supabase'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
@@ -16,29 +16,34 @@ export async function GET() {
       )
     }
 
-    const payments = await prisma.payment.findMany({
-      include: {
-        user: {
-          select: {
-            name: true,
-            email: true,
-          },
-        },
-      },
-      orderBy: { createdAt: 'desc' },
-    })
+    // Fetch payments with user data
+    const { data: payments, error } = await supabase
+      .from('Payment')
+      .select(`
+        *,
+        user:User (
+          name,
+          email
+        )
+      `)
+      .order('createdAt', { ascending: false })
 
-    const formattedPayments = payments.map((payment: any) => ({
+    if (error) {
+      throw new Error(`Failed to fetch payments: ${error.message}`)
+    }
+
+    // Format payments
+    const formattedPayments = (payments || []).map((payment: any) => ({
       id: payment.id,
       user: {
-        name: payment.user.name,
-        email: payment.user.email,
+        name: payment.user?.name,
+        email: payment.user?.email,
       },
       amount: payment.amount,
       status: payment.status,
       description: payment.description,
-      dueDate: payment.dueDate?.toISOString() || null,
-      createdAt: payment.createdAt.toISOString(),
+      dueDate: payment.dueDate || null,
+      createdAt: payment.createdAt,
     }))
 
     return NextResponse.json(formattedPayments)

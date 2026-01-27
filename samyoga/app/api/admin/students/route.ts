@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { auth } from '@/auth'
-import { prisma } from '@/lib/prisma'
+import { supabase } from '@/lib/supabase'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
@@ -16,27 +16,34 @@ export async function GET() {
       )
     }
 
-    const students = await prisma.user.findMany({
-      where: { role: 'STUDENT' },
-      include: {
-        _count: {
-          select: {
-            bookings: true,
-            payments: true,
-          },
-        },
-      },
-      orderBy: { createdAt: 'desc' },
-    })
+    // Fetch students
+    const { data: students, error } = await supabase
+      .from('User')
+      .select(`
+        id,
+        name,
+        email,
+        status,
+        createdAt,
+        bookings:Booking(count),
+        payments:Payment(count)
+      `)
+      .eq('role', 'STUDENT')
+      .order('createdAt', { ascending: false })
 
-    const formattedStudents = students.map((student: any) => ({
+    if (error) {
+      throw new Error(`Failed to fetch students: ${error.message}`)
+    }
+
+    // Format students with counts
+    const formattedStudents = (students || []).map((student: any) => ({
       id: student.id,
       name: student.name,
       email: student.email,
       status: student.status,
-      createdAt: student.createdAt.toISOString(),
-      bookingsCount: student._count.bookings,
-      paymentsCount: student._count.payments,
+      createdAt: student.createdAt,
+      bookingsCount: student.bookings?.[0]?.count || 0,
+      paymentsCount: student.payments?.[0]?.count || 0,
     }))
 
     return NextResponse.json(formattedStudents)

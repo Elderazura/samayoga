@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { auth } from '@/auth'
-import { prisma } from '@/lib/prisma'
+import { supabase } from '@/lib/supabase'
 
 export const runtime = 'nodejs'
 
@@ -25,33 +25,57 @@ export async function POST(request: Request) {
     }
 
     // Check if class exists and has space
-    const classItem = await prisma.class.findUnique({
-      where: { id: classId },
-      include: { bookings: true },
-    })
+    const { data: classItem, error: classError } = await supabase
+      .from('Class')
+      .select(`
+        *,
+        bookings:Booking(count)
+      `)
+      .eq('id', classId)
+      .single()
 
-    if (!classItem) {
+    if (classError || !classItem) {
       return NextResponse.json(
         { error: 'Class not found' },
         { status: 404 }
       )
     }
 
-    if (classItem.bookings.length >= classItem.maxStudents) {
+    const bookingsCount = classItem.bookings?.[0]?.count || 0
+    if (bookingsCount >= classItem.maxStudents) {
       return NextResponse.json(
         { error: 'Class is full' },
         { status: 400 }
       )
     }
 
+    // Check if user already has a booking
+    const { data: existingBooking } = await supabase
+      .from('Booking')
+      .select('id')
+      .eq('userId', session.user.id)
+      .eq('classId', classId)
+      .single()
+
+    if (existingBooking) {
+      return NextResponse.json(
+        { error: 'You have already booked this class' },
+        { status: 400 }
+      )
+    }
+
     // Create booking
-    await prisma.booking.create({
-      data: {
+    const { error: bookingError } = await supabase
+      .from('Booking')
+      .insert({
         userId: session.user.id,
         classId: classId,
         status: 'CONFIRMED',
-      },
-    })
+      })
+
+    if (bookingError) {
+      throw new Error(`Failed to create booking: ${bookingError.message}`)
+    }
 
     return NextResponse.json({ message: 'Class booked successfully' })
   } catch (error: any) {

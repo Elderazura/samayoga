@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { prisma } from '@/lib/prisma'
+import { supabase } from '@/lib/supabase'
 import bcrypt from 'bcryptjs'
 
 export const runtime = 'nodejs'
@@ -9,40 +9,44 @@ export async function POST() {
     const password = await bcrypt.hash('12345678', 10)
 
     // Create admin user
-    const admin = await prisma.user.upsert({
-      where: { email: 'salith@samayoga.online' },
-      update: {
-        password,
-        role: 'ADMIN',
-        status: 'APPROVED',
-      },
-      create: {
-        email: 'salith@samyoga.online',
+    const { data: admin, error: adminError } = await supabase
+      .from('User')
+      .upsert({
+        email: 'salith@samayoga.online',
         name: 'Admin User',
         password,
         role: 'ADMIN',
         status: 'APPROVED',
-        emailVerified: new Date(),
-      },
-    })
+        emailVerified: new Date().toISOString(),
+      }, {
+        onConflict: 'email',
+      })
+      .select()
+      .single()
+
+    if (adminError) {
+      throw new Error(`Failed to create admin: ${adminError.message}`)
+    }
 
     // Create student user
-    const student = await prisma.user.upsert({
-      where: { email: 'student1@samayoga.online' },
-      update: {
-        password,
-        role: 'STUDENT',
-        status: 'APPROVED',
-      },
-      create: {
+    const { data: student, error: studentError } = await supabase
+      .from('User')
+      .upsert({
         email: 'student1@samayoga.online',
         name: 'Student One',
         password,
         role: 'STUDENT',
         status: 'APPROVED',
-        emailVerified: new Date(),
-      },
-    })
+        emailVerified: new Date().toISOString(),
+      }, {
+        onConflict: 'email',
+      })
+      .select()
+      .single()
+
+    if (studentError) {
+      throw new Error(`Failed to create student: ${studentError.message}`)
+    }
 
     return NextResponse.json({
       message: 'Users created successfully',

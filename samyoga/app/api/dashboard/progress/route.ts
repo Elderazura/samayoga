@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { auth } from '@/auth'
-import { prisma } from '@/lib/prisma'
+import { supabase } from '@/lib/supabase'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
@@ -16,50 +16,75 @@ export async function GET() {
       )
     }
 
-    // Get classes attended
-    const attendedBookings = await prisma.booking.count({
-      where: {
-        userId: session.user.id,
-        status: 'ATTENDED',
-      },
-    })
+    // Get classes attended count
+    const { count: attendedCount, error: attendedError } = await supabase
+      .from('Booking')
+      .select('*', { count: 'exact', head: true })
+      .eq('userId', session.user.id)
+      .eq('status', 'ATTENDED')
 
-    // Get practice days (unique days with any booking)
-    const practiceDays = await prisma.booking.findMany({
-      where: { userId: session.user.id },
-      select: {
-        class: {
-          select: { date: true },
-        },
-      },
-    })
+    if (attendedError) {
+      throw new Error(`Failed to count attended bookings: ${attendedError.message}`)
+    }
 
+    // Get all bookings to calculate practice days
+    const { data: bookings, error: bookingsError } = await supabase
+      .from('Booking')
+      .select(`
+        class:Class (
+          date
+        )
+      `)
+      .eq('userId', session.user.id)
+
+    if (bookingsError) {
+      throw new Error(`Failed to fetch bookings: ${bookingsError.message}`)
+    }
+
+    // Calculate unique practice days
     const uniqueDays = new Set(
-      practiceDays.map((b: any) => b.class.date.toDateString())
+      (bookings || []).map((b: any) => {
+        const date = new Date(b.class?.date)
+        return date.toDateString()
+      }).filter(Boolean)
     ).size
 
     // Get last practice date
-    const lastBooking = await prisma.booking.findFirst({
-      where: {
-        userId: session.user.id,
-        status: 'ATTENDED',
-      },
-      orderBy: { createdAt: 'desc' },
-      include: { class: true },
-    })
+    const { data: lastBookingData, error: lastBookingError } = await supabase
+      .from('Booking')
+      .select(`
+        class:Class (
+          date
+        )
+      `)
+      .eq('userId', session.user.id)
+      .eq('status', 'ATTENDED')
+      .order('createdAt', { ascending: false })
+      .limit(1)
+      .maybeSingle()
 
     // Get progress records
-    const progressRecords = await prisma.progress.findMany({
-      where: { userId: session.user.id },
-      orderBy: { recordedAt: 'desc' },
-      take: 10,
-    })
+    const { data: progressRecords, error: progressError } = await supabase
+      .from('Progress')
+      .select('*')
+      .eq('userId', session.user.id)
+      .order('recordedAt', { ascending: false })
+      .limit(10)
+
+    if (progressError) {
+      throw new Error(`Failed to fetch progress: ${progressError.message}`)
+    }
+
+    // Extract date from nested structure
+    const lastPracticeDate = lastBookingData && Array.isArray(lastBookingData.class) 
+      ? lastBookingData.class[0]?.date 
+      : (lastBookingData as any)?.class?.date || null
 
     return NextResponse.json({
-      classesAttended: attendedBookings,
+      classesAttended: attendedCount || 0,
       practiceDays: uniqueDays,
-      lastPracticeDate: lastBooking?.class.date.toISOString() || null,
-      goals: progressRecords.map((p: any) => ({
+      lastPracticeDate: lastPracticeDate,
+      goals: (progressRecords || []).map((p: any) => ({
         metric: p.metric,
         value: p.value,
         notes: p.notes,

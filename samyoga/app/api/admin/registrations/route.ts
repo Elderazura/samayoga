@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { auth } from '@/auth'
-import { prisma } from '@/lib/prisma'
+import { supabase } from '@/lib/supabase'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
@@ -16,24 +16,32 @@ export async function GET() {
       )
     }
 
-    const registrations = await prisma.registration.findMany({
-      include: {
-        user: {
-          select: {
-            id: true,
-            name: true,
-            email: true,
-            status: true,
-            createdAt: true,
-          },
-        },
-      },
-      orderBy: {
-        submittedAt: 'desc',
-      },
-    })
+    // Fetch registrations with user data
+    const { data: registrations, error } = await supabase
+      .from('Registration')
+      .select(`
+        *,
+        user:User (
+          id,
+          name,
+          email,
+          status,
+          createdAt
+        )
+      `)
+      .order('submittedAt', { ascending: false })
 
-    return NextResponse.json(registrations)
+    if (error) {
+      throw new Error(`Failed to fetch registrations: ${error.message}`)
+    }
+
+    // Transform data to match expected format
+    const formattedRegistrations = registrations?.map((reg: any) => ({
+      ...reg,
+      user: reg.user,
+    })) || []
+
+    return NextResponse.json(formattedRegistrations)
   } catch (error: any) {
     console.error('Error fetching registrations:', error)
     return NextResponse.json(
