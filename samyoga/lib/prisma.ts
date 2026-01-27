@@ -1,5 +1,7 @@
 import { PrismaClient } from '@prisma/client'
 import { PrismaBetterSqlite3 } from '@prisma/adapter-better-sqlite3'
+import { PrismaPg } from '@prisma/adapter-pg'
+import { Pool } from 'pg'
 import path from 'path'
 import fs from 'fs'
 
@@ -67,18 +69,24 @@ function getPrisma(): PrismaClient {
       }
     } else {
       // PostgreSQL setup (production/Supabase)
-      // DATABASE_URL is automatically read from process.env by Prisma
-      // Ensure DATABASE_URL is set in the environment
+      // For Prisma 7, we need to use the PostgreSQL adapter
       if (!process.env.DATABASE_URL) {
         throw new Error('DATABASE_URL environment variable is not set')
       }
       
-      // For Prisma 7 with PostgreSQL, we need to ensure the connection URL is available
-      // The URL is read from process.env.DATABASE_URL automatically
-      // We don't need an adapter for PostgreSQL - it uses the native driver
+      // Create a connection pool for PostgreSQL
+      const pool = new Pool({
+        connectionString: process.env.DATABASE_URL,
+      })
+      
+      // Create the PostgreSQL adapter
+      const adapter = new PrismaPg(pool)
+      
+      // Initialize Prisma Client with the adapter
       globalForPrisma.prisma = new PrismaClient({
+        adapter,
         log: process.env.NODE_ENV === 'development' ? ['error', 'warn'] : ['error'],
-      }) as PrismaClient
+      })
     }
   }
   
