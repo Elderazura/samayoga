@@ -1,0 +1,16 @@
+{
+  "name": "Samayoga",
+  "short_name": "Samayoga",
+  "start_url": "/",
+  "display": "browser",
+  "background_color": "#FAF9F7",
+  "theme_color": "#FAF9F7",
+  "icons": [
+    {
+      "src": "/assets/brand/logo/logo_f.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "any maskable"
+    }
+  ]
+}
