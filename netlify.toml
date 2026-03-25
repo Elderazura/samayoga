@@ -12,8 +12,9 @@
 
 [build.environment]
   NODE_VERSION = "20"
-  # Set in Netlify UI (Site → Environment variables), not in git:
-  # RESEND_API_KEY, CONTACT_NOTIFY_EMAIL (optional), RESEND_FROM_EMAIL (optional after domain verify)
+  # Required for /api/contact and /api/register (Resend). Set in Netlify → Site configuration → Environment variables:
+  # RESEND_API_KEY=re_...   (from https://resend.com/api-keys — without this, forms return 503)
+  # Optional: CONTACT_NOTIFY_EMAIL, RESEND_FROM_EMAIL (after domain verify in Resend)
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"

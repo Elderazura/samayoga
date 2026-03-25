@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { sendContactEmail } from '@/lib/email'
+import { SAMAYOGA_INBOX_EMAIL } from '@/lib/inbox'
 
 export const runtime = 'nodejs'
 
@@ -24,7 +25,9 @@ export async function POST(request: Request) {
     if (!result.sent) {
       if (result.reason === 'not_configured') {
         return NextResponse.json(
-          { error: 'Email is not configured on the server' },
+          {
+            error: `We could not send this automatically. Please write to ${SAMAYOGA_INBOX_EMAIL} directly.`,
+          },
           { status: 503 }
         )
       }
