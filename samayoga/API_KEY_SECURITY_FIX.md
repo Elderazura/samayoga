@@ -1,7 +1,7 @@
 # 🔒 API Key Security Fix - COMPLETED
 
 ## Issue
-Google detected a publicly exposed API key (`AIzaSyA2Iyn3q6Tx0Je6rA-OrPUZwSpUcVBLFqY`) in the GitHub repository.
+Google detected a publicly exposed Google Cloud API key in the GitHub repository. **Do not paste real keys into docs or commits.**
 
 ## ✅ Actions Taken
 
@@ -29,7 +29,7 @@ Replaced the exposed API key with placeholders in all documentation files:
 
 1. Go to [Google Cloud Console](https://console.cloud.google.com/)
 2. Navigate to: **APIs & Services** → **Credentials**
-3. Find the API key: `AIzaSyA2Iyn3q6Tx0Je6rA-OrPUZwSpUcVBLFqY`
+3. Find the API key entry you use for this project (in Credentials, not copied here)
 4. Click **Edit** (pencil icon)
 5. Click **Regenerate Key** button
 6. Copy the new key
