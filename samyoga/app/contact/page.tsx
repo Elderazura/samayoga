@@ -5,7 +5,7 @@ import { PageHeader } from '@/components/PageHeader'
 import { Section } from '@/components/Section'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { Mail, Phone } from 'lucide-react'
+import { Mail, Youtube } from 'lucide-react'
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -148,7 +148,7 @@ export default function Contact() {
               <CardHeader>
                 <CardTitle>Get in Touch</CardTitle>
                 <CardDescription>
-                  We're here to help with questions about classes, private sessions, 
+                  We&apos;re here to help with questions about classes, private sessions, 
                   or anything else.
                 </CardDescription>
               </CardHeader>
@@ -174,14 +174,52 @@ export default function Contact() {
               </CardHeader>
               <CardContent className="space-y-2">
                 <p className="text-sm text-[#1A1A1A]/80">
-                  <strong>Hatha Yoga:</strong> Active practice for strength and flexibility
+                  <strong>Hatha Yoga:</strong> Balanced practice for strength, flexibility, and wellbeing
                 </p>
                 <p className="text-sm text-[#1A1A1A]/80">
-                  <strong>Yin Yoga:</strong> Passive practice for deep release and restoration
+                  <strong>Yin Yoga:</strong> Slow, calming practice for deep rest and release
+                </p>
+                <p className="text-sm text-[#1A1A1A]/80">
+                  <strong>Breathwork (Pranayama):</strong> Gentle breathing for calm and balance
+                </p>
+                <p className="text-sm text-[#1A1A1A]/80">
+                  <strong>Meditation:</strong> Guided practice for clarity and inner calm
                 </p>
                 <p className="text-sm text-[#1A1A1A]/80 mt-4">
                   Classes are conducted online via Google Meet.
                 </p>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>Time Slots (IST)</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-2">
+                <p className="text-sm text-[#1A1A1A]/80 font-medium">Morning</p>
+                <p className="text-sm text-[#1A1A1A]/80">6 AM – 7 AM IST</p>
+                <p className="text-sm text-[#1A1A1A]/80">7 AM – 8 AM IST</p>
+                <p className="text-sm text-[#1A1A1A]/80">8 AM – 9 AM IST</p>
+                <p className="text-sm text-[#1A1A1A]/80 font-medium mt-4">Evening</p>
+                <p className="text-sm text-[#1A1A1A]/80">5 PM – 6 PM IST</p>
+                <p className="text-sm text-[#1A1A1A]/80">6 PM – 7 PM IST</p>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>YouTube</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <a
+                  href="https://www.youtube.com/@SamayogabySamyuktha"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 text-sm text-primary-700 hover:text-primary-800 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 rounded-md px-1"
+                >
+                  <Youtube className="w-5 h-5" />
+                  @SamayogabySamyuktha
+                </a>
               </CardContent>
             </Card>
 

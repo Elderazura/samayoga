@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button'
 import { VideoSection } from '@/components/VideoSection'
 import { InstagramFeed } from '@/components/InstagramFeed'
 import Link from 'next/link'
-import { Heart, Sparkles, Wind } from 'lucide-react'
+import { Brain, Heart, Sparkles, Wind } from 'lucide-react'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
 
@@ -90,10 +90,10 @@ export default function Home() {
         <div className="text-center mb-8 sm:mb-12">
           <h2 className="text-3xl sm:text-4xl font-light mb-3 sm:mb-4">Offerings</h2>
           <p className="text-base sm:text-lg text-[#1A1A1A]/70 max-w-2xl mx-auto px-4">
-            Two complementary practices for different needs and energies.
+            Hatha and Yin yoga, pranayama, and meditation — for strength, softness, breath, and stillness.
           </p>
         </div>
-          <div className="grid sm:grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 max-w-5xl mx-auto">
+        <div className="grid sm:grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 max-w-5xl mx-auto">
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -111,20 +111,18 @@ export default function Home() {
                 </motion.div>
                 <CardTitle>Hatha Yoga</CardTitle>
                 <CardDescription>
-                  Active practice for strength, flexibility, and alignment
+                  A balanced practice for strength, flexibility, and overall wellbeing
                 </CardDescription>
               </CardHeader>
               <CardContent>
                 <p className="text-[#1A1A1A]/80 leading-relaxed mb-6">
-                  Through conscious movement and held poses, we build strength, 
-                  improve flexibility, and explore our physical capabilities. 
-                  Hatha yoga helps us feel energized, capable, and alive.
+                  Hatha yoga combines steady movement and simple postures to support the body in a sustainable way. The practice helps improve strength and flexibility while encouraging better posture, balance, and ease in everyday movement.
                 </p>
                 <ul className="space-y-2 text-sm text-[#1A1A1A]/70 mb-6">
-                  <li>• Build physical strength and flexibility</li>
-                  <li>• Improve alignment and body awareness</li>
-                  <li>• Energize and invigorate the body</li>
-                  <li>• Develop focus and concentration</li>
+                  <li>• Build strength and flexibility at a comfortable pace</li>
+                  <li>• Support healthy posture and mobility</li>
+                  <li>• Reduce stiffness and physical tension</li>
+                  <li>• Improve focus and body awareness</li>
                 </ul>
               </CardContent>
             </Card>
@@ -147,19 +145,86 @@ export default function Home() {
                 </motion.div>
                 <CardTitle>Yin Yoga</CardTitle>
                 <CardDescription>
-                  Passive practice for deep release and restoration
+                  A slow, calming practice for deep rest and release
                 </CardDescription>
               </CardHeader>
               <CardContent>
                 <p className="text-[#1A1A1A]/80 leading-relaxed mb-6">
-                  Through long, supported holds, we release tension, calm the nervous system, 
-                  and create space for stillness. Yin yoga helps us rest, restore, and let go.
+                  Yin yoga invites you to slow down and hold poses gently, giving the body time to soften and release stored tension. This practice supports rest and recovery, helping you feel more relaxed and grounded.
                 </p>
                 <ul className="space-y-2 text-sm text-[#1A1A1A]/70 mb-6">
-                  <li>• Release deep tension in connective tissues</li>
-                  <li>• Calm the nervous system</li>
-                  <li>• Practice patience and surrender</li>
-                  <li>• Create space for reflection and rest</li>
+                  <li>• Ease tightness and discomfort</li>
+                  <li>• Support joint health and flexibility</li>
+                  <li>• Encourage deep relaxation</li>
+                  <li>• Improve rest and sleep quality</li>
+                </ul>
+              </CardContent>
+            </Card>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+          >
+            <Card className="h-full hover:shadow-lg transition-all duration-500 hover:-translate-y-1">
+              <CardHeader>
+                <motion.div 
+                  className="w-12 h-12 rounded-full bg-primary-100 flex items-center justify-center mb-4"
+                  whileHover={{ rotate: 360, scale: 1.1 }}
+                  transition={{ duration: 0.5 }}
+                >
+                  <Heart className="w-6 h-6 text-primary-600" />
+                </motion.div>
+                <CardTitle>Breathwork (Pranayama)</CardTitle>
+                <CardDescription>
+                  Gentle breathing practices to support calm and balance
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <p className="text-[#1A1A1A]/80 leading-relaxed mb-6">
+                  Pranayama focuses on breathing in a slow, mindful way to help settle the mind and body. These practices can be especially helpful for managing stress and creating a sense of steadiness throughout the day.
+                </p>
+                <ul className="space-y-2 text-sm text-[#1A1A1A]/70 mb-6">
+                  <li>• Reduce stress and mental overwhelm</li>
+                  <li>• Encourage steady, relaxed breathing</li>
+                  <li>• Support emotional balance</li>
+                  <li>• Improve overall sense of calm</li>
+                </ul>
+              </CardContent>
+            </Card>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, x: 30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+          >
+            <Card className="h-full hover:shadow-lg transition-all duration-500 hover:-translate-y-1">
+              <CardHeader>
+                <motion.div 
+                  className="w-12 h-12 rounded-full bg-primary-100 flex items-center justify-center mb-4"
+                  whileHover={{ rotate: -360, scale: 1.1 }}
+                  transition={{ duration: 0.5 }}
+                >
+                  <Brain className="w-6 h-6 text-primary-600" />
+                </motion.div>
+                <CardTitle>Meditation</CardTitle>
+                <CardDescription>
+                  A simple practice for clarity, presence, and inner calm
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <p className="text-[#1A1A1A]/80 leading-relaxed mb-6">
+                  Meditation offers a quiet pause from daily demands. Through guided practices, you learn to gently observe the mind, helping create more space, clarity, and ease in everyday life.
+                </p>
+                <ul className="space-y-2 text-sm text-[#1A1A1A]/70 mb-6">
+                  <li>• Calm mental noise</li>
+                  <li>• Improve focus and attention</li>
+                  <li>• Support emotional wellbeing</li>
+                  <li>• Cultivate a sense of inner calm</li>
                 </ul>
               </CardContent>
             </Card>

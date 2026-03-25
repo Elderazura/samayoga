@@ -55,13 +55,23 @@ export function Footer() {
           {/* Contact Info */}
           <div>
             <h4 className="text-sm font-medium text-[#1A1A1A] mb-4">Connect</h4>
-            <p className="text-sm text-[#1A1A1A]/70 leading-relaxed">
+            <p className="text-sm text-[#1A1A1A]/70 leading-relaxed mb-2">
               <Link
                 href="/contact"
                 className="hover:text-[#1A1A1A] transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 rounded-md px-1"
               >
                 Request a session
               </Link>
+            </p>
+            <p className="text-sm text-[#1A1A1A]/70 leading-relaxed">
+              <a
+                href="https://www.youtube.com/@SamayogabySamyuktha"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-[#1A1A1A] transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 rounded-md px-1"
+              >
+                YouTube — @SamayogabySamyuktha
+              </a>
             </p>
           </div>
         </div>

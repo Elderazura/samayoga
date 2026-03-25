@@ -32,7 +32,7 @@
    - All public pages: Updated to use brand colors
 
 ### Logo Integration
-- Logo added to navbar: `/assets/brand/logo/Logo_c.png`
+- Logo added to navbar: `/assets/brand/logo/logo_f.png`
 - Responsive sizing (h-8 on mobile, h-10 on desktop)
 - Logo displayed instead of text "Samayoga"
 

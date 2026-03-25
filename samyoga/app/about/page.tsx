@@ -46,20 +46,20 @@ export default function About() {
               </h2>
               <div className="space-y-6 text-[#1A1A1A]/80 leading-relaxed">
                 <p className="text-lg font-light">
-                  My journey with yoga began as a search for balance—in my body, in my mind, 
-                  and in my life. What I found was more than a practice; it was a way of being 
-                  that honors both movement and stillness, effort and ease.
+                  My journey with yoga began as a quiet search for balance — in my body, in my mind, 
+                  and in the way I was living my life. What I discovered was more than physical practice. 
+                  It became a way of being, one that honors both movement and stillness, effort and ease.
                 </p>
                 <p className="text-base">
-                  Through years of practice and study, I&apos;ve learned that yoga isn&apos;t about 
-                  perfection or pushing through. It&apos;s about presence, patience, and kindness—to 
-                  ourselves and to our bodies.
+                  Over the years, through practice and study, yoga taught me that it isn&apos;t about 
+                  perfection or pushing through. It&apos;s about presence. About patience. About meeting 
+                  ourselves — and our bodies — with kindness.
                 </p>
                 <p className="text-base font-medium">
-                  Today, I offer Hatha and Yin yoga classes that help students find their own 
-                  balance. Whether you need movement and strength or stillness and release, 
-                  there&apos;s a practice for you. And whether you&apos;re new to yoga or have been 
-                  practicing for years, you&apos;re welcome here.
+                  Today, I offer Hatha and Yin yoga, along with pranayama and meditation, creating 
+                  space for strength, softness, breath, and stillness. Whether you&apos;re seeking movement 
+                  and stability or deep rest and release, there is a practice here for you. And whether 
+                  you&apos;re new to yoga or have been walking this path for years — you are welcome.
                 </p>
               </div>
             </motion.div>
@@ -282,28 +282,16 @@ export default function About() {
           <div className="grid md:grid-cols-2 gap-6">
             {[
               {
-                question: "Do I need prior yoga experience?",
-                answer: "No, not at all. All classes are beginner-friendly, and modifications are offered throughout. We start where you are."
-              },
-              {
-                question: "What should I bring to class?",
-                answer: "Just yourself and a yoga mat. Props like blocks, blankets, and straps can be helpful but aren't required. Use what you have or can easily find."
-              },
-              {
                 question: "How long are the classes?",
-                answer: "Class length varies. Hatha classes are typically 60-75 minutes, while Yin classes are usually 45-60 minutes. Duration is always confirmed when you book."
-              },
-              {
-                question: "Do I need to be flexible to practice yoga?",
-                answer: "Absolutely not. Yoga isn't about being flexible—it's about meeting yourself where you are and practicing with kindness. Flexibility comes with time, but it's never the goal."
+                answer: "Hatha and Yin classes are typically 60 minutes. Breathwork and meditation sessions may vary in length depending on the focus and experience of the class. The exact duration is always shared at the time of booking."
               },
               {
                 question: "Can I practice if I have injuries or limitations?",
-                answer: "Yes. Please let me know about any injuries or limitations when you book. We&apos;ll adapt the practice to honor your body and support your healing. Yoga should never cause pain."
+                answer: "Yes. Please let me know about any injuries or limitations when you book. The practice can be adapted to support your body and your comfort. Yoga is meant to feel supportive, never painful."
               },
               {
-                question: "How do online classes work?",
-                answer: "Classes are conducted via Google Meet. You'll receive a link before class. All you need is a device with a camera and internet connection. The experience is just as personal and supportive as in-person classes."
+                question: "How do I know which class is right for me?",
+                answer: "If you're unsure, feel free to reach out. I'm happy to guide you toward a class that best suits your needs and energy."
               }
             ].map((faq, index) => (
               <motion.div

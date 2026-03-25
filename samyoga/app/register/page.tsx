@@ -122,7 +122,7 @@ export default function RegisterPage() {
                   <h3 className="text-lg font-medium text-[#1A1A1A] border-b border-primary-200 pb-2">
                     Contact Information
                   </h3>
-                  
+
                   <div>
                     <label htmlFor="name" className="block text-sm font-medium text-[#1A1A1A] mb-2">
                       Full Name <span className="text-primary-600">*</span>
@@ -176,7 +176,7 @@ export default function RegisterPage() {
                   <h3 className="text-lg font-medium text-[#1A1A1A] border-b border-primary-200 pb-2">
                     Physical Information
                   </h3>
-                  
+
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                       <label htmlFor="height" className="block text-sm font-medium text-[#1A1A1A] mb-2">
@@ -215,7 +215,7 @@ export default function RegisterPage() {
                   <h3 className="text-lg font-medium text-[#1A1A1A] border-b border-primary-200 pb-2">
                     Experience & Health
                   </h3>
-                  
+
                   <div>
                     <label htmlFor="yogaExperience" className="block text-sm font-medium text-[#1A1A1A] mb-2">
                       Yoga Experience (if any)
@@ -252,7 +252,7 @@ export default function RegisterPage() {
                   <h3 className="text-lg font-medium text-[#1A1A1A] border-b border-primary-200 pb-2">
                     Class Preferences
                   </h3>
-                  
+
                   <div>
                     <label htmlFor="classType" className="block text-sm font-medium text-[#1A1A1A] mb-2">
                       Preferred Type of Class <span className="text-primary-600">*</span>

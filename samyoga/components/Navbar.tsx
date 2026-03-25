@@ -34,7 +34,7 @@ export function Navbar() {
             aria-label="Samayoga Home"
           >
             <Image
-              src="/assets/brand/logo/Logo_c.png"
+              src="/assets/brand/logo/logo_f.png"
               alt="Samayoga Logo"
               width={120}
               height={40}
@@ -85,14 +85,7 @@ export function Navbar() {
                   Sign Out
                 </button>
               </div>
-            ) : (
-              <Link
-                href="/auth/signin"
-                className="text-[#1A1A1A]/80 hover:text-primary-600 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 rounded-md px-2"
-              >
-                Sign In
-              </Link>
-            )}
+            ) : null}
           </div>
 
           {/* Mobile menu button */}
@@ -160,15 +153,7 @@ export function Navbar() {
                   Sign Out
                 </button>
               </>
-            ) : (
-              <Link
-                href="/auth/signin"
-                className="block px-4 py-3 rounded-lg text-[#1A1A1A]/80 hover:bg-primary-50 hover:text-primary-600 active:bg-primary-100 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 text-base font-medium min-h-[44px] flex items-center"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Sign In
-              </Link>
-            )}
+            ) : null}
           </div>
         </div>
       )}
