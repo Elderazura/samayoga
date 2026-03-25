@@ -2,45 +2,16 @@
 
 import { motion } from 'framer-motion'
 import Image from 'next/image'
+import { INSTAGRAM_URL, INSTAGRAM_HANDLE } from '@/lib/social'
 
-// Placeholder Instagram feed - replace with actual Instagram API integration
-const instagramPosts = [
-  {
-    id: 1,
-    image: '/assets/images/landscape/yoga_1.jpeg',
-    alt: 'Yoga practice',
-    likes: 42,
-  },
-  {
-    id: 2,
-    image: '/assets/images/landscape/yoga_2.jpeg',
-    alt: 'Yoga practice',
-    likes: 38,
-  },
-  {
-    id: 3,
-    image: '/assets/images/landscape/yoga_3.jpeg',
-    alt: 'Yoga practice',
-    likes: 45,
-  },
-  {
-    id: 4,
-    image: '/assets/images/landscape/yoga_4.jpeg',
-    alt: 'Yoga practice',
-    likes: 52,
-  },
-  {
-    id: 5,
-    image: '/assets/images/landscape/yoga_5.jpeg',
-    alt: 'Yoga practice',
-    likes: 41,
-  },
-  {
-    id: 6,
-    image: '/assets/images/landscape/yoga_6.jpeg',
-    alt: 'Yoga practice',
-    likes: 39,
-  },
+// Visual grid uses site photography; tap through to the Instagram profile for real posts.
+const showcaseImages = [
+  { id: 1, image: '/assets/images/landscape/yoga_1.jpeg', alt: 'Yoga practice' },
+  { id: 2, image: '/assets/images/landscape/yoga_2.jpeg', alt: 'Yoga practice' },
+  { id: 3, image: '/assets/images/landscape/yoga_3.jpeg', alt: 'Yoga practice' },
+  { id: 4, image: '/assets/images/landscape/yoga_4.jpeg', alt: 'Yoga practice' },
+  { id: 5, image: '/assets/images/landscape/yoga_5.jpeg', alt: 'Yoga practice' },
+  { id: 6, image: '/assets/images/landscape/yoga_6.jpeg', alt: 'Yoga practice' },
 ]
 
 export function InstagramFeed() {
@@ -51,23 +22,28 @@ export function InstagramFeed() {
           Follow Our Journey
         </h2>
         <p className="text-base sm:text-lg text-[#1A1A1A]/70 max-w-2xl mx-auto">
-          Connect with us on Instagram for daily inspiration and practice moments
+          Daily inspiration and practice moments on Instagram
         </p>
         <a
-          href="https://instagram.com/samayoga"
+          href={INSTAGRAM_URL}
           target="_blank"
           rel="noopener noreferrer"
           className="inline-block mt-4 text-primary-600 hover:text-primary-700 font-medium transition-colors"
         >
-          @samayoga →
+          {INSTAGRAM_HANDLE} →
         </a>
       </div>
-      
+
+      <p className="text-center text-sm text-[#1A1A1A]/60 max-w-xl mx-auto mb-6">
+        Instagram posts live on our profile. This grid highlights practice photos from the site—open
+        Instagram to see the latest reels and posts.
+      </p>
+
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-3">
-        {instagramPosts.map((post, index) => (
+        {showcaseImages.map((post, index) => (
           <motion.a
             key={post.id}
-            href="https://instagram.com/samayoga"
+            href={INSTAGRAM_URL}
             target="_blank"
             rel="noopener noreferrer"
             initial={{ opacity: 0, scale: 0.9 }}
@@ -84,10 +60,10 @@ export function InstagramFeed() {
               className="object-cover group-hover:scale-110 transition-transform duration-500"
               sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 16vw"
             />
-            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 flex items-center justify-center">
-              <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-white text-sm font-medium">
-                ❤️ {post.likes}
-              </div>
+            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/25 transition-colors duration-300 flex items-center justify-center">
+              <span className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-white text-xs font-medium px-2 text-center">
+                View on Instagram
+              </span>
             </div>
           </motion.a>
         ))}

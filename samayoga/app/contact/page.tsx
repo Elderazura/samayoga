@@ -5,7 +5,8 @@ import { PageHeader } from '@/components/PageHeader'
 import { Section } from '@/components/Section'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { Mail, Youtube } from 'lucide-react'
+import { Mail, Youtube, Instagram } from 'lucide-react'
+import { INSTAGRAM_URL, INSTAGRAM_HANDLE } from '@/lib/social'
 import { SAMAYOGA_INBOX_EMAIL } from '@/lib/inbox'
 
 export default function Contact() {
@@ -182,14 +183,31 @@ export default function Contact() {
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="flex items-start gap-4">
-                  <Mail className="w-5 h-5 text-primary-700 mt-0.5" />
+                  <Mail className="w-5 h-5 text-primary-700 mt-0.5 shrink-0" />
                   <div>
                     <p className="text-sm font-medium text-[#1A1A1A] mb-1">Email</p>
                     <a
                       href={`mailto:${SAMAYOGA_INBOX_EMAIL}`}
-                      className="text-sm text-primary-700 hover:text-primary-800 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 rounded-md px-1"
+                      className="text-sm text-primary-700 hover:text-primary-800 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 rounded-md px-1 break-all"
                     >
                       {SAMAYOGA_INBOX_EMAIL}
+                    </a>
+                    <p className="text-xs text-[#1A1A1A]/60 mt-1">
+                      Same address receives contact form and registration messages.
+                    </p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-4">
+                  <Instagram className="w-5 h-5 text-primary-700 mt-0.5 shrink-0" />
+                  <div>
+                    <p className="text-sm font-medium text-[#1A1A1A] mb-1">Instagram</p>
+                    <a
+                      href={INSTAGRAM_URL}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-sm text-primary-700 hover:text-primary-800 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 rounded-md px-1"
+                    >
+                      {INSTAGRAM_HANDLE}
                     </a>
                   </div>
                 </div>

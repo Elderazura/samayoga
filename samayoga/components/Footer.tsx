@@ -1,4 +1,6 @@
 import Link from 'next/link'
+import { SAMAYOGA_INBOX_EMAIL } from '@/lib/inbox'
+import { INSTAGRAM_URL, INSTAGRAM_HANDLE } from '@/lib/social'
 
 export function Footer() {
   const currentYear = new Date().getFullYear()
@@ -68,6 +70,24 @@ export function Footer() {
               >
                 Request a session
               </Link>
+            </p>
+            <p className="text-sm text-[#1A1A1A]/70 leading-relaxed mb-2">
+              <a
+                href={`mailto:${SAMAYOGA_INBOX_EMAIL}`}
+                className="hover:text-[#1A1A1A] transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 rounded-md px-1 break-all"
+              >
+                {SAMAYOGA_INBOX_EMAIL}
+              </a>
+            </p>
+            <p className="text-sm text-[#1A1A1A]/70 leading-relaxed mb-2">
+              <a
+                href={INSTAGRAM_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-[#1A1A1A] transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 rounded-md px-1"
+              >
+                Instagram — {INSTAGRAM_HANDLE}
+              </a>
             </p>
             <p className="text-sm text-[#1A1A1A]/70 leading-relaxed">
               <a
