@@ -4,7 +4,7 @@ import { sendRegisterEmail } from '@/lib/email'
 export const runtime = 'nodejs'
 
 const MAX = 200
-const MAX_LONG = 5000
+const MAX_LONG = 8000
 
 function clampStr(s: unknown, max: number): string {
   if (typeof s !== 'string') return ''
@@ -17,11 +17,17 @@ export async function POST(request: Request) {
     const name = clampStr(body.name, MAX)
     const email = clampStr(body.email, 320)
     const phone = clampStr(body.phone, 40)
-    const classType = clampStr(body.classType, 80)
-    const preferredTimeSlot = clampStr(body.preferredTimeSlot, 200)
+    const height = clampStr(body.height, 80)
+    const weight = clampStr(body.weight, 80)
+    const experienceLevel = clampStr(body.experienceLevel, 40)
     const yogaExperience = clampStr(body.yogaExperience, MAX_LONG)
-    const healthNotes = clampStr(body.healthNotes, MAX_LONG)
-    const message = clampStr(body.message, MAX_LONG)
+    const goals = clampStr(body.goals, MAX_LONG)
+    const healthIssues = clampStr(body.healthIssues, MAX_LONG)
+    const classFormat = clampStr(body.classFormat, 40)
+    const practiceStyle = clampStr(body.practiceStyle, 40)
+    const preferredTimeSlot = clampStr(body.preferredTimeSlot, 80)
+    const availability = clampStr(body.availability, MAX_LONG)
+    const additionalInfo = clampStr(body.additionalInfo, MAX_LONG)
 
     if (!name || name.length > 200) {
       return NextResponse.json({ error: 'Invalid name' }, { status: 400 })
@@ -29,19 +35,34 @@ export async function POST(request: Request) {
     if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       return NextResponse.json({ error: 'Invalid email' }, { status: 400 })
     }
-    if (!classType) {
-      return NextResponse.json({ error: 'Please choose a class type' }, { status: 400 })
+    if (!classFormat || !['group', 'private'].includes(classFormat)) {
+      return NextResponse.json(
+        { error: 'Please choose group or private class' },
+        { status: 400 }
+      )
+    }
+    if (!preferredTimeSlot) {
+      return NextResponse.json(
+        { error: 'Please choose a preferred time slot' },
+        { status: 400 }
+      )
     }
 
     const result = await sendRegisterEmail({
       name,
       email,
       phone: phone || undefined,
-      classType,
-      preferredTimeSlot: preferredTimeSlot || undefined,
+      height: height || undefined,
+      weight: weight || undefined,
+      experienceLevel: experienceLevel || undefined,
       yogaExperience: yogaExperience || undefined,
-      healthNotes: healthNotes || undefined,
-      message: message || undefined,
+      goals: goals || undefined,
+      healthIssues: healthIssues || undefined,
+      classFormat,
+      practiceStyle: practiceStyle || undefined,
+      preferredTimeSlot,
+      availability: availability || undefined,
+      additionalInfo: additionalInfo || undefined,
     })
 
     if (!result.sent) {

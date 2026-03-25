@@ -2,42 +2,32 @@
 
 import { useState, FormEvent } from 'react'
 import Link from 'next/link'
+import { Loader2 } from 'lucide-react'
 import { PageHeader } from '@/components/PageHeader'
 import { Section } from '@/components/Section'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { SAMAYOGA_INBOX_EMAIL } from '@/lib/inbox'
 
-const CLASS_OPTIONS = [
-  { value: '', label: 'Select…' },
-  { value: 'Hatha Yoga', label: 'Hatha Yoga' },
-  { value: 'Yin Yoga', label: 'Yin Yoga' },
-  { value: 'Hatha + Yin (both)', label: 'Hatha + Yin (both)' },
-  { value: 'Private / one-to-one', label: 'Private / one-to-one' },
-  { value: 'Not sure yet', label: 'Not sure yet' },
-]
-
-const TIME_OPTIONS = [
-  { value: '', label: 'Select…' },
-  { value: 'Morning 6–7 AM IST', label: 'Morning 6–7 AM IST' },
-  { value: 'Morning 7–8 AM IST', label: 'Morning 7–8 AM IST' },
-  { value: 'Morning 8–9 AM IST', label: 'Morning 8–9 AM IST' },
-  { value: 'Evening 5–6 PM IST', label: 'Evening 5–6 PM IST' },
-  { value: 'Evening 6–7 PM IST', label: 'Evening 6–7 PM IST' },
-  { value: 'Other (explain below)', label: 'Other (explain below)' },
-]
+const initialForm = {
+  name: '',
+  email: '',
+  phone: '',
+  height: '',
+  weight: '',
+  experienceLevel: '',
+  yogaExperience: '',
+  goals: '',
+  healthIssues: '',
+  classFormat: '',
+  practiceStyle: '',
+  preferredTimeSlot: '',
+  availability: '',
+  additionalInfo: '',
+}
 
 export default function RegisterPage() {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    classType: '',
-    preferredTimeSlot: '',
-    yogaExperience: '',
-    healthNotes: '',
-    message: '',
-  })
+  const [formData, setFormData] = useState(initialForm)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [showSuccess, setShowSuccess] = useState(false)
   const [submitError, setSubmitError] = useState<string | null>(null)
@@ -55,11 +45,17 @@ export default function RegisterPage() {
           name: formData.name.trim(),
           email: formData.email.trim(),
           phone: formData.phone.trim(),
-          classType: formData.classType,
-          preferredTimeSlot: formData.preferredTimeSlot,
+          height: formData.height.trim(),
+          weight: formData.weight.trim(),
+          experienceLevel: formData.experienceLevel,
           yogaExperience: formData.yogaExperience.trim(),
-          healthNotes: formData.healthNotes.trim(),
-          message: formData.message.trim(),
+          goals: formData.goals.trim(),
+          healthIssues: formData.healthIssues.trim(),
+          classFormat: formData.classFormat,
+          practiceStyle: formData.practiceStyle,
+          preferredTimeSlot: formData.preferredTimeSlot,
+          availability: formData.availability.trim(),
+          additionalInfo: formData.additionalInfo.trim(),
         }),
       })
 
@@ -74,17 +70,8 @@ export default function RegisterPage() {
       }
 
       setShowSuccess(true)
-      setFormData({
-        name: '',
-        email: '',
-        phone: '',
-        classType: '',
-        preferredTimeSlot: '',
-        yogaExperience: '',
-        healthNotes: '',
-        message: '',
-      })
-      setTimeout(() => setShowSuccess(false), 10000)
+      setFormData(initialForm)
+      setTimeout(() => setShowSuccess(false), 12000)
     } catch (err) {
       setSubmitError(err instanceof Error ? err.message : 'Something went wrong.')
     } finally {
@@ -103,26 +90,27 @@ export default function RegisterPage() {
     })
   }
 
+  const inputClass =
+    'w-full px-4 py-3 rounded-lg border border-primary-200 bg-white focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-transparent text-base'
+
   return (
     <>
       <PageHeader
-        title="Register"
-        description="Tell us a bit about you and what you are looking for. We will reply by email with availability and your Google Meet link."
+        title="Register for Classes"
+        description="Join our yoga community. Submit this form and we will reply by email with next steps and your Google Meet link. No account is created on this site."
       />
 
       <Section>
-        <div className="max-w-2xl mx-auto">
+        <div className="max-w-3xl mx-auto">
           <Card>
             <CardHeader>
-              <CardTitle>Join a class</CardTitle>
+              <CardTitle>Registration form</CardTitle>
               <CardDescription>
-                Submissions go to our inbox by email—no account is created on the site.
-                Prefer only email?{' '}
-                <Link
-                  href="/contact"
-                  className="text-primary-700 underline hover:text-primary-800"
-                >
-                  Contact form
+                Please provide the following information so we can tailor your practice. All
+                information is kept confidential and is emailed to our inbox only.
+                Quick question only? Use the{' '}
+                <Link href="/contact" className="text-primary-700 underline hover:text-primary-800">
+                  contact form
                 </Link>{' '}
                 or{' '}
                 <a
@@ -138,8 +126,8 @@ export default function RegisterPage() {
               {showSuccess && (
                 <div className="mb-6 p-4 bg-primary-50 rounded-lg border border-primary-200">
                   <p className="text-sm text-primary-800">
-                    Thank you! We received your request and will get back to you within 24–48
-                    hours.
+                    Thank you! We received your registration and will get back to you within
+                    24–48 hours.
                   </p>
                 </div>
               )}
@@ -155,163 +143,296 @@ export default function RegisterPage() {
                   </p>
                 </div>
               )}
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div>
-                  <label
-                    htmlFor="name"
-                    className="block text-sm font-medium text-[#1A1A1A] mb-2"
-                  >
-                    Full name <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    id="name"
-                    name="name"
-                    required
-                    value={formData.name}
-                    onChange={handleChange}
-                    autoComplete="name"
-                    className="w-full px-4 py-3.5 rounded-lg border border-primary-200 bg-white focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-transparent text-base"
-                  />
+              <form onSubmit={handleSubmit} className="space-y-8">
+                {/* Contact */}
+                <div className="space-y-4">
+                  <h3 className="text-lg font-medium text-[#1A1A1A] border-b border-primary-200 pb-2">
+                    Contact information
+                  </h3>
+                  <div>
+                    <label htmlFor="name" className="block text-sm font-medium text-[#1A1A1A] mb-2">
+                      Full name <span className="text-primary-600">*</span>
+                    </label>
+                    <input
+                      id="name"
+                      name="name"
+                      type="text"
+                      required
+                      value={formData.name}
+                      onChange={handleChange}
+                      autoComplete="name"
+                      className={inputClass}
+                      placeholder="Your full name"
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="email" className="block text-sm font-medium text-[#1A1A1A] mb-2">
+                      Email address <span className="text-primary-600">*</span>
+                    </label>
+                    <input
+                      id="email"
+                      name="email"
+                      type="email"
+                      required
+                      value={formData.email}
+                      onChange={handleChange}
+                      autoComplete="email"
+                      className={inputClass}
+                      placeholder="your.email@example.com"
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="phone" className="block text-sm font-medium text-[#1A1A1A] mb-2">
+                      Phone number
+                    </label>
+                    <input
+                      id="phone"
+                      name="phone"
+                      type="tel"
+                      value={formData.phone}
+                      onChange={handleChange}
+                      autoComplete="tel"
+                      className={inputClass}
+                      placeholder="+91 1234567890"
+                    />
+                  </div>
                 </div>
-                <div>
-                  <label
-                    htmlFor="email"
-                    className="block text-sm font-medium text-[#1A1A1A] mb-2"
-                  >
-                    Email <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    required
-                    value={formData.email}
-                    onChange={handleChange}
-                    autoComplete="email"
-                    className="w-full px-4 py-3.5 rounded-lg border border-primary-200 bg-white focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-transparent text-base"
-                  />
+
+                {/* Physical */}
+                <div className="space-y-4">
+                  <h3 className="text-lg font-medium text-[#1A1A1A] border-b border-primary-200 pb-2">
+                    Physical information
+                  </h3>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label htmlFor="height" className="block text-sm font-medium text-[#1A1A1A] mb-2">
+                        Height
+                      </label>
+                      <input
+                        id="height"
+                        name="height"
+                        type="text"
+                        value={formData.height}
+                        onChange={handleChange}
+                        className={inputClass}
+                        placeholder={'e.g. 5\'6" or 168 cm'}
+                      />
+                    </div>
+                    <div>
+                      <label htmlFor="weight" className="block text-sm font-medium text-[#1A1A1A] mb-2">
+                        Weight
+                      </label>
+                      <input
+                        id="weight"
+                        name="weight"
+                        type="text"
+                        value={formData.weight}
+                        onChange={handleChange}
+                        className={inputClass}
+                        placeholder="e.g. 65 kg"
+                      />
+                    </div>
+                  </div>
                 </div>
-                <div>
-                  <label
-                    htmlFor="phone"
-                    className="block text-sm font-medium text-[#1A1A1A] mb-2"
-                  >
-                    Phone <span className="text-[#1A1A1A]/50">(optional)</span>
-                  </label>
-                  <input
-                    type="tel"
-                    id="phone"
-                    name="phone"
-                    value={formData.phone}
-                    onChange={handleChange}
-                    autoComplete="tel"
-                    className="w-full px-4 py-3.5 rounded-lg border border-primary-200 bg-white focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-transparent text-base"
-                  />
+
+                {/* Experience & health */}
+                <div className="space-y-4">
+                  <h3 className="text-lg font-medium text-[#1A1A1A] border-b border-primary-200 pb-2">
+                    Experience &amp; health
+                  </h3>
+                  <div>
+                    <label
+                      htmlFor="experienceLevel"
+                      className="block text-sm font-medium text-[#1A1A1A] mb-2"
+                    >
+                      Yoga experience level
+                    </label>
+                    <select
+                      id="experienceLevel"
+                      name="experienceLevel"
+                      value={formData.experienceLevel}
+                      onChange={handleChange}
+                      className={inputClass}
+                    >
+                      <option value="">Select your experience level</option>
+                      <option value="beginner">Beginner — New to yoga</option>
+                      <option value="some-experience">Some experience — Practiced occasionally</option>
+                      <option value="intermediate">Intermediate — Regular practice</option>
+                      <option value="advanced">Advanced — Years of practice</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label
+                      htmlFor="yogaExperience"
+                      className="block text-sm font-medium text-[#1A1A1A] mb-2"
+                    >
+                      Yoga experience (if any)
+                    </label>
+                    <textarea
+                      id="yogaExperience"
+                      name="yogaExperience"
+                      value={formData.yogaExperience}
+                      onChange={handleChange}
+                      rows={3}
+                      className={`${inputClass} resize-none`}
+                      placeholder="Tell us about your previous yoga experience, if any…"
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="goals" className="block text-sm font-medium text-[#1A1A1A] mb-2">
+                      What are your goals with yoga?
+                    </label>
+                    <textarea
+                      id="goals"
+                      name="goals"
+                      value={formData.goals}
+                      onChange={handleChange}
+                      rows={4}
+                      className={`${inputClass} resize-none`}
+                      placeholder="e.g. flexibility, stress relief, strength, balance…"
+                    />
+                  </div>
+                  <div>
+                    <label
+                      htmlFor="healthIssues"
+                      className="block text-sm font-medium text-[#1A1A1A] mb-2"
+                    >
+                      Any injuries, limitations, or health concerns?
+                    </label>
+                    <textarea
+                      id="healthIssues"
+                      name="healthIssues"
+                      value={formData.healthIssues}
+                      onChange={handleChange}
+                      rows={3}
+                      className={`${inputClass} resize-none`}
+                      placeholder="So we can adapt the practice for you…"
+                    />
+                  </div>
                 </div>
-                <div>
-                  <label
-                    htmlFor="classType"
-                    className="block text-sm font-medium text-[#1A1A1A] mb-2"
-                  >
-                    Class interest <span className="text-red-500">*</span>
-                  </label>
-                  <select
-                    id="classType"
-                    name="classType"
-                    required
-                    value={formData.classType}
-                    onChange={handleChange}
-                    className="w-full px-4 py-3.5 rounded-lg border border-primary-200 bg-white focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-transparent text-base"
-                  >
-                    {CLASS_OPTIONS.map((opt) => (
-                      <option key={opt.value || 'empty'} value={opt.value}>
-                        {opt.label}
-                      </option>
-                    ))}
-                  </select>
+
+                {/* Class preferences */}
+                <div className="space-y-4">
+                  <h3 className="text-lg font-medium text-[#1A1A1A] border-b border-primary-200 pb-2">
+                    Class preferences
+                  </h3>
+                  <div>
+                    <label
+                      htmlFor="classFormat"
+                      className="block text-sm font-medium text-[#1A1A1A] mb-2"
+                    >
+                      Preferred type of class <span className="text-primary-600">*</span>
+                    </label>
+                    <select
+                      id="classFormat"
+                      name="classFormat"
+                      required
+                      value={formData.classFormat}
+                      onChange={handleChange}
+                      className={inputClass}
+                    >
+                      <option value="">Select class type</option>
+                      <option value="group">Group class</option>
+                      <option value="private">Private class</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label
+                      htmlFor="practiceStyle"
+                      className="block text-sm font-medium text-[#1A1A1A] mb-2"
+                    >
+                      Yoga style preference
+                    </label>
+                    <select
+                      id="practiceStyle"
+                      name="practiceStyle"
+                      value={formData.practiceStyle}
+                      onChange={handleChange}
+                      className={inputClass}
+                    >
+                      <option value="">Select your preference</option>
+                      <option value="hatha">Hatha Yoga (active practice)</option>
+                      <option value="yin">Yin Yoga (passive practice)</option>
+                      <option value="both">Both Hatha and Yin</option>
+                      <option value="open">Open to either</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label
+                      htmlFor="preferredTimeSlot"
+                      className="block text-sm font-medium text-[#1A1A1A] mb-2"
+                    >
+                      Preferred time slot (Indian time) <span className="text-primary-600">*</span>
+                    </label>
+                    <select
+                      id="preferredTimeSlot"
+                      name="preferredTimeSlot"
+                      required
+                      value={formData.preferredTimeSlot}
+                      onChange={handleChange}
+                      className={inputClass}
+                    >
+                      <option value="">Select time slot</option>
+                      <option value="morning-6-8">Morning (6:00 AM – 8:00 AM IST)</option>
+                      <option value="morning-8-10">Morning (8:00 AM – 10:00 AM IST)</option>
+                      <option value="midday-10-12">Midday (10:00 AM – 12:00 PM IST)</option>
+                      <option value="afternoon-12-2">Afternoon (12:00 PM – 2:00 PM IST)</option>
+                      <option value="afternoon-2-4">Afternoon (2:00 PM – 4:00 PM IST)</option>
+                      <option value="evening-4-6">Evening (4:00 PM – 6:00 PM IST)</option>
+                      <option value="evening-6-8">Evening (6:00 PM – 8:00 PM IST)</option>
+                      <option value="night-8-10">Night (8:00 PM – 10:00 PM IST)</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label
+                      htmlFor="availability"
+                      className="block text-sm font-medium text-[#1A1A1A] mb-2"
+                    >
+                      Preferred class times (free text)
+                    </label>
+                    <input
+                      id="availability"
+                      name="availability"
+                      type="text"
+                      value={formData.availability}
+                      onChange={handleChange}
+                      className={inputClass}
+                      placeholder="e.g. weekday mornings, weekends only…"
+                    />
+                  </div>
+                  <div>
+                    <label
+                      htmlFor="additionalInfo"
+                      className="block text-sm font-medium text-[#1A1A1A] mb-2"
+                    >
+                      Additional information
+                    </label>
+                    <textarea
+                      id="additionalInfo"
+                      name="additionalInfo"
+                      value={formData.additionalInfo}
+                      onChange={handleChange}
+                      rows={4}
+                      className={`${inputClass} resize-none`}
+                      placeholder="Anything else you would like us to know…"
+                    />
+                  </div>
                 </div>
-                <div>
-                  <label
-                    htmlFor="preferredTimeSlot"
-                    className="block text-sm font-medium text-[#1A1A1A] mb-2"
-                  >
-                    Preferred time (IST){' '}
-                    <span className="text-[#1A1A1A]/50">(optional)</span>
-                  </label>
-                  <select
-                    id="preferredTimeSlot"
-                    name="preferredTimeSlot"
-                    value={formData.preferredTimeSlot}
-                    onChange={handleChange}
-                    className="w-full px-4 py-3.5 rounded-lg border border-primary-200 bg-white focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-transparent text-base"
-                  >
-                    {TIME_OPTIONS.map((opt) => (
-                      <option key={opt.value || 'empty'} value={opt.value}>
-                        {opt.label}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <div>
-                  <label
-                    htmlFor="yogaExperience"
-                    className="block text-sm font-medium text-[#1A1A1A] mb-2"
-                  >
-                    Yoga experience{' '}
-                    <span className="text-[#1A1A1A]/50">(optional)</span>
-                  </label>
-                  <textarea
-                    id="yogaExperience"
-                    name="yogaExperience"
-                    value={formData.yogaExperience}
-                    onChange={handleChange}
-                    rows={3}
-                    className="w-full px-4 py-3.5 rounded-lg border border-primary-200 bg-white focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-transparent resize-none text-base"
-                    placeholder="e.g. beginner, returning after a break, regular practice…"
-                  />
-                </div>
-                <div>
-                  <label
-                    htmlFor="healthNotes"
-                    className="block text-sm font-medium text-[#1A1A1A] mb-2"
-                  >
-                    Health / injuries / anything we should know{' '}
-                    <span className="text-[#1A1A1A]/50">(optional)</span>
-                  </label>
-                  <textarea
-                    id="healthNotes"
-                    name="healthNotes"
-                    value={formData.healthNotes}
-                    onChange={handleChange}
-                    rows={3}
-                    className="w-full px-4 py-3.5 rounded-lg border border-primary-200 bg-white focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-transparent resize-none text-base"
-                  />
-                </div>
-                <div>
-                  <label
-                    htmlFor="message"
-                    className="block text-sm font-medium text-[#1A1A1A] mb-2"
-                  >
-                    Anything else?{' '}
-                    <span className="text-[#1A1A1A]/50">(optional)</span>
-                  </label>
-                  <textarea
-                    id="message"
-                    name="message"
-                    value={formData.message}
-                    onChange={handleChange}
-                    rows={3}
-                    className="w-full px-4 py-3.5 rounded-lg border border-primary-200 bg-white focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-transparent resize-none text-base"
-                  />
-                </div>
+
                 <Button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full min-h-[48px] text-base"
                   size="lg"
+                  className="w-full min-h-[52px] text-base inline-flex items-center justify-center gap-2"
                 >
-                  {isSubmitting ? 'Sending…' : 'Submit registration'}
+                  {isSubmitting ? (
+                    <>
+                      <Loader2 className="w-4 h-4 animate-spin shrink-0" aria-hidden />
+                      Submitting…
+                    </>
+                  ) : (
+                    'Submit registration'
+                  )}
                 </Button>
               </form>
             </CardContent>
