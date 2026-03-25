@@ -1,6 +1,5 @@
 /**
  * Centralized error handling utilities
- * Prepares for Supabase migration
  */
 
 export class AppError extends Error {

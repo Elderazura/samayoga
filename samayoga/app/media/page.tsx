@@ -8,7 +8,12 @@ import { InstagramFeed } from '@/components/InstagramFeed'
 import mediaData from '@/src/content/media/media.json'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
-import type { MediaVideo } from '@/types/database'
+
+interface MediaVideo {
+  id: string
+  title: string
+  description?: string
+}
 
 interface MediaData {
   images: {

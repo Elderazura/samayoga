@@ -4,7 +4,6 @@ import { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { Menu, X } from 'lucide-react'
-import { useSession, signOut } from 'next-auth/react'
 
 const navigation = [
   { name: 'Home', href: '/' },
@@ -12,12 +11,10 @@ const navigation = [
   { name: 'Media', href: '/media' },
   { name: 'Blog', href: '/blog' },
   { name: 'Contact', href: '/contact' },
-  { name: 'Register', href: '/register', showWhenLoggedIn: false },
 ]
 
 export function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  const { data: session, status } = useSession()
 
   return (
     <nav
@@ -27,7 +24,6 @@ export function Navbar() {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
-          {/* Logo */}
           <Link
             href="/"
             className="flex items-center gap-2 hover:opacity-80 transition-opacity focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 rounded-md px-2"
@@ -43,52 +39,18 @@ export function Navbar() {
             />
           </Link>
 
-          {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
-            {navigation.map((item) => {
-              // Hide Register if logged in
-              if (item.name === 'Register' && status === 'authenticated') {
-                return null
-              }
-              return (
-                <Link
-                  key={item.name}
-                  href={item.href}
-                  className="text-[#1A1A1A]/80 hover:text-primary-700 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 rounded-md px-2"
-                >
-                  {item.name}
-                </Link>
-              )
-            })}
-            {status === 'authenticated' ? (
-              <div className="flex items-center gap-4">
-                {session?.user?.role === 'ADMIN' && (
-                  <Link
-                    href="/admin"
-                    className="text-[#1A1A1A]/80 hover:text-primary-600 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 rounded-md px-2"
-                  >
-                    Admin
-                  </Link>
-                )}
-                {session?.user?.status === 'APPROVED' && (
-                  <Link
-                    href="/dashboard"
-                    className="text-[#1A1A1A]/80 hover:text-primary-600 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 rounded-md px-2"
-                  >
-                    Dashboard
-                  </Link>
-                )}
-                <button
-                  onClick={() => signOut({ callbackUrl: '/' })}
-                  className="text-[#1A1A1A]/80 hover:text-primary-600 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 rounded-md px-2"
-                >
-                  Sign Out
-                </button>
-              </div>
-            ) : null}
+            {navigation.map((item) => (
+              <Link
+                key={item.name}
+                href={item.href}
+                className="text-[#1A1A1A]/80 hover:text-primary-700 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 rounded-md px-2"
+              >
+                {item.name}
+              </Link>
+            ))}
           </div>
 
-          {/* Mobile menu button */}
           <button
             type="button"
             className="md:hidden p-3 rounded-lg text-[#1A1A1A] hover:bg-primary-50 active:bg-primary-100 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
@@ -106,7 +68,6 @@ export function Navbar() {
         </div>
       </div>
 
-      {/* Mobile Navigation */}
       {mobileMenuOpen && (
         <div
           id="mobile-menu"
@@ -123,37 +84,6 @@ export function Navbar() {
                 {item.name}
               </Link>
             ))}
-            {status === 'authenticated' ? (
-              <>
-                {session?.user?.role === 'ADMIN' && (
-                  <Link
-                    href="/admin"
-                    className="block px-4 py-3 rounded-lg text-[#1A1A1A]/80 hover:bg-primary-50 hover:text-primary-600 active:bg-primary-100 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 text-base font-medium min-h-[44px] flex items-center"
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    Admin
-                  </Link>
-                )}
-                {session?.user?.status === 'APPROVED' && (
-                  <Link
-                    href="/dashboard"
-                    className="block px-4 py-3 rounded-lg text-[#1A1A1A]/80 hover:bg-primary-50 hover:text-primary-600 active:bg-primary-100 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 text-base font-medium min-h-[44px] flex items-center"
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    Dashboard
-                  </Link>
-                )}
-                <button
-                  onClick={() => {
-                    setMobileMenuOpen(false)
-                    signOut({ callbackUrl: '/' })
-                  }}
-                  className="block w-full text-left px-4 py-3 rounded-lg text-[#1A1A1A]/80 hover:bg-primary-50 hover:text-primary-600 active:bg-primary-100 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 text-base font-medium min-h-[44px]"
-                >
-                  Sign Out
-                </button>
-              </>
-            ) : null}
           </div>
         </div>
       )}

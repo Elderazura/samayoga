@@ -33,7 +33,7 @@ export default function Home() {
           </p>
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
             <Button asChild size="lg" className="min-h-[48px] sm:min-h-[52px] text-base sm:text-lg px-6 sm:px-8">
-              <Link href="/register">Join a Class</Link>
+              <Link href="/contact">Get in Touch</Link>
             </Button>
             <Button asChild variant="outline" size="lg" className="bg-white/90 hover:bg-white border-white/50 text-[#1A1A1A] min-h-[48px] sm:min-h-[52px] text-base sm:text-lg px-6 sm:px-8">
               <Link href="/about">Learn More</Link>
@@ -361,8 +361,8 @@ export default function Home() {
           title="Ready to Begin?"
           description="Start your yoga journey with a gentle, grounding practice that honors where you are."
           primaryAction={{
-            label: "Join a Class",
-            href: "/register"
+            label: "Contact us",
+            href: "/contact"
           }}
           secondaryAction={{
             label: "Read the Blog",
