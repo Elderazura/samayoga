@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { SAMAYOGA_INBOX_EMAIL } from '@/lib/inbox'
-import { INSTAGRAM_URL, INSTAGRAM_HANDLE } from '@/lib/social'
+import { INSTAGRAM_URL, INSTAGRAM_HANDLE, YOUTUBE_URL, YOUTUBE_HANDLE } from '@/lib/social'
 
 export function Footer() {
   const currentYear = new Date().getFullYear()
@@ -91,12 +91,12 @@ export function Footer() {
             </p>
             <p className="text-sm text-[#1A1A1A]/70 leading-relaxed">
               <a
-                href="https://www.youtube.com/@SamayogabySamyuktha"
+                href={YOUTUBE_URL}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hover:text-[#1A1A1A] transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 rounded-md px-1"
               >
-                YouTube — @SamayogabySamyuktha
+                YouTube — {YOUTUBE_HANDLE}
               </a>
             </p>
           </div>

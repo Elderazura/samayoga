@@ -6,7 +6,12 @@ import { Section } from '@/components/Section'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Mail, Youtube, Instagram } from 'lucide-react'
-import { INSTAGRAM_URL, INSTAGRAM_HANDLE } from '@/lib/social'
+import {
+  INSTAGRAM_URL,
+  INSTAGRAM_HANDLE,
+  YOUTUBE_URL,
+  YOUTUBE_HANDLE,
+} from '@/lib/social'
 import { SAMAYOGA_INBOX_EMAIL } from '@/lib/inbox'
 
 export default function Contact() {
@@ -258,13 +263,13 @@ export default function Contact() {
               </CardHeader>
               <CardContent>
                 <a
-                  href="https://www.youtube.com/@SamayogabySamyuktha"
+                  href={YOUTUBE_URL}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 text-sm text-primary-700 hover:text-primary-800 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 rounded-md px-1"
                 >
                   <Youtube className="w-5 h-5" />
-                  @SamayogabySamyuktha
+                  {YOUTUBE_HANDLE}
                 </a>
               </CardContent>
             </Card>
