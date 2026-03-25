@@ -141,10 +141,6 @@ export function InstagramReelsSlider() {
           </div>
         </div>
       </div>
-
-      <p className="text-center text-[10px] sm:text-xs text-[#1A1A1A]/45 mt-3 tracking-wide uppercase">
-        Muted · auto-advancing · tap dots to jump
-      </p>
     </div>
   )
 }
