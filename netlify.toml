@@ -1,9 +1,14 @@
 # Monorepo layout: app lives in `samyoga/` (repo root has no package.json).
 # Netlify must build from this subdirectory.
+#
+# Publish must NOT equal base (Next plugin error). Use `.next` relative to `base`.
+# Also clear "Publish directory" in Netlify UI if it is set to `samyoga` (leave empty
+# or let this file win — UI + base=samyoga breaks the build).
 
 [build]
   base = "samyoga"
   command = "npm run build"
+  publish = ".next"
 
 [build.environment]
   NODE_VERSION = "20"
