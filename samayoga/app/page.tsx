@@ -309,7 +309,7 @@ export default function Home() {
         </div>
       </Section>
 
-      {/* Testimonials Placeholder */}
+      {/* Testimonials */}
       <Section>
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-4xl font-light mb-8">What Students Say</h2>
@@ -322,11 +322,10 @@ export default function Home() {
             >
               <Card className="h-full hover:shadow-lg transition-shadow duration-300">
                 <CardContent className="pt-6">
-                  <p className="text-[#1A1A1A]/80 leading-relaxed mb-4 italic">
+                  <p className="text-[#1A1A1A]/80 leading-relaxed italic">
                     &quot;Samyuktha&apos;s classes have helped me find balance in my busy life. 
                     Her gentle approach makes yoga accessible and meaningful.&quot;
                   </p>
-                  <p className="text-sm text-[#1A1A1A]/60">— Student Name</p>
                 </CardContent>
               </Card>
             </motion.div>
@@ -338,11 +337,10 @@ export default function Home() {
             >
               <Card className="h-full hover:shadow-lg transition-shadow duration-300">
                 <CardContent className="pt-6">
-                  <p className="text-[#1A1A1A]/80 leading-relaxed mb-4 italic">
+                  <p className="text-[#1A1A1A]/80 leading-relaxed italic">
                     &quot;I appreciate how she adapts the practice to what I need each day. 
                     Sometimes it&apos;s movement, sometimes it&apos;s stillness—and both feel perfect.&quot;
                   </p>
-                  <p className="text-sm text-[#1A1A1A]/60">— Student Name</p>
                 </CardContent>
               </Card>
             </motion.div>
