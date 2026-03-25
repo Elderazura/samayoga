@@ -48,3 +48,53 @@ export async function sendContactEmail(input: {
   }
   return { sent: true }
 }
+
+export async function sendRegisterEmail(input: {
+  name: string
+  email: string
+  phone?: string
+  classType: string
+  preferredTimeSlot?: string
+  yogaExperience?: string
+  healthNotes?: string
+  message?: string
+}): Promise<{ sent: boolean; reason?: string }> {
+  const to = getNotifyEmail()
+  const resend = getResend()
+  if (!resend) {
+    return { sent: false, reason: 'not_configured' }
+  }
+
+  const lines = [
+    'New class / registration request (submitted via website).',
+    '',
+    `Name: ${input.name}`,
+    `Email: ${input.email}`,
+    `Phone: ${input.phone?.trim() || '—'}`,
+    `Class interest: ${input.classType}`,
+    `Preferred time (IST): ${input.preferredTimeSlot?.trim() || '—'}`,
+    '',
+    'Yoga experience:',
+    input.yogaExperience?.trim() || '—',
+    '',
+    'Health / injuries / notes:',
+    input.healthNotes?.trim() || '—',
+    '',
+    'Additional message:',
+    input.message?.trim() || '—',
+  ]
+
+  const { error } = await resend.emails.send({
+    from: getFromEmail(),
+    to: [to],
+    replyTo: input.email,
+    subject: `[Samayoga Register] ${input.name}`,
+    text: lines.join('\n'),
+  })
+
+  if (error) {
+    console.error('[email] register send failed', error)
+    return { sent: false, reason: error.message }
+  }
+  return { sent: true }
+}

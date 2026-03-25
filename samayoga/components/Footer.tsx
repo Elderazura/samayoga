@@ -44,6 +44,12 @@ export function Footer() {
                 Blog
               </Link>
               <Link
+                href="/register"
+                className="block text-sm text-[#1A1A1A]/70 hover:text-[#1A1A1A] transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 rounded-md px-1"
+              >
+                Register
+              </Link>
+              <Link
                 href="/contact"
                 className="block text-sm text-[#1A1A1A]/70 hover:text-[#1A1A1A] transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 rounded-md px-1"
               >
