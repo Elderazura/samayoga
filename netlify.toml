@@ -1,0 +1,12 @@
+# Monorepo layout: app lives in `samyoga/` (repo root has no package.json).
+# Netlify must build from this subdirectory.
+
+[build]
+  base = "samyoga"
+  command = "npm run build"
+
+[build.environment]
+  NODE_VERSION = "20"
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
