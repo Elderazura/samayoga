@@ -4,10 +4,12 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "dev:3001": "next dev -p 3001",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "create-admin": "tsx scripts/create-admin-supabase.ts"
+    "create-admin": "tsx scripts/create-admin-supabase.ts",
+    "test-email": "tsx scripts/send-test-email.ts"
   },
   "dependencies": {
     "@google/generative-ai": "^0.24.1",

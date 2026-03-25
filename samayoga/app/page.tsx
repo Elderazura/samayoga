@@ -4,7 +4,6 @@ import { Section } from '@/components/Section'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { CTA } from '@/components/CTA'
 import { Button } from '@/components/ui/button'
-import { VideoSection } from '@/components/VideoSection'
 import { InstagramFeed } from '@/components/InstagramFeed'
 import Link from 'next/link'
 import { Brain, Heart, Sparkles, Wind } from 'lucide-react'
@@ -82,8 +81,13 @@ export default function Home() {
         </div>
       </Section>
 
-      {/* Video Section */}
-      <VideoSection videoId="https://youtu.be/GSENAaAu8QQ?si=pHgLhazvc6RzFX-U" />
+      {/* Video — coming soon */}
+      <Section>
+        <div className="max-w-3xl mx-auto text-center py-12 sm:py-16 px-4 rounded-2xl border border-[#1A1A1A]/10 bg-white/40 backdrop-blur-sm">
+          <h2 className="text-3xl sm:text-4xl font-light mb-3 sm:mb-4">Practice Video</h2>
+          <p className="text-lg sm:text-xl text-[#1A1A1A]/60 tracking-wide">Coming soon</p>
+        </div>
+      </Section>
 
       {/* Offerings Section */}
       <Section className="bg-white/30">

@@ -10,7 +10,9 @@ function getResend() {
 /** Inbox that receives contact + registration notifications */
 export function getNotifyEmail(): string {
   const to = process.env.CONTACT_NOTIFY_EMAIL?.trim()
-  return to || SAMAYOGA_INBOX_EMAIL
+  const raw = to || SAMAYOGA_INBOX_EMAIL
+  // Resend test mode matches recipient case-sensitively; Gmail addresses are case-insensitive for delivery
+  return raw.toLowerCase()
 }
 
 export function getFromEmail(): string {

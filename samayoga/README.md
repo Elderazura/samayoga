@@ -132,13 +132,9 @@ samayoga/
 - **Prisma** - Database ORM
 - **SQLite** - Database (dev) / PostgreSQL (production)
 
-## 📝 Default Admin Credentials
+## 📝 Admin user (scripts)
 
-After running `npm run create-admin`:
-- Email: `admin@samayoga.com`
-- Password: `admin123`
-
-**Change these in production!**
+Create an admin with `npm run create-admin` (see script help). Use a strong `ADMIN_PASSWORD` in production — do not use default passwords from docs.
 
 ## 🔐 Security
 

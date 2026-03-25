@@ -75,12 +75,14 @@ git push -u origin main
    - **Root Directory**: `./` (leave empty)
    - **Build Command**: `npm run build` (default)
    - **Output Directory**: `.next` (default)
-5. Add Environment Variables:
+5. Add Environment Variables (use values from your Supabase and hosting dashboards — do not commit real secrets):
    ```
-   DATABASE_URL=postgresql://postgres.tsqekcguvwlwugnfzfig:Pentacose369%2A@aws-1-ap-south-1.pooler.supabase.com:6543/postgres?pgbouncer=true
-   DIRECT_URL=postgresql://postgres.tsqekcguvwlwugnfzfig:Pentacose369%2A@aws-1-ap-south-1.pooler.supabase.com:5432/postgres
-   AUTH_SECRET=MmXrbu0dpYBXrgp+4FxHRjZzJ6pX2Sc09oSC9u21qrQ=
-   AUTH_URL=https://samayoga.vercel.app
+   DATABASE_URL=postgresql://postgres.[ref]:[PASSWORD]@aws-0-[region].pooler.supabase.com:6543/postgres?pgbouncer=true
+   DIRECT_URL=postgresql://postgres.[ref]:[PASSWORD]@aws-0-[region].pooler.supabase.com:5432/postgres
+   AUTH_SECRET=<output of: openssl rand -base64 32>
+   AUTH_URL=https://your-site.vercel.app
+   NEXT_PUBLIC_SUPABASE_URL=https://[ref].supabase.co
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=<anon key from Supabase Project Settings>
    ```
 6. Click **Deploy**
 

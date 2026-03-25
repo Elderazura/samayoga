@@ -12,6 +12,8 @@
 
 [build.environment]
   NODE_VERSION = "20"
+  # Set in Netlify UI (Site → Environment variables), not in git:
+  # NEXT_PUBLIC_SUPABASE_URL, NEXT_PUBLIC_SUPABASE_ANON_KEY, AUTH_SECRET, AUTH_URL, RESEND_API_KEY, etc.
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"

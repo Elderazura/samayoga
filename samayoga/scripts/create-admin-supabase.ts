@@ -5,11 +5,13 @@ import { config } from 'dotenv'
 // Load environment variables
 config({ path: '.env.local' })
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://tsqekcguvwlwugnfzfig.supabase.co'
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'sb_publishable_IqsMpv4r4GbNhUBafjPWGA_SlXD4Qj0'
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 
 if (!supabaseUrl || !supabaseAnonKey) {
-  console.error('❌ Error: Supabase environment variables are not set')
+  console.error(
+    '❌ Set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY in .env.local (or the environment).'
+  )
   process.exit(1)
 }
 
