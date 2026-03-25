@@ -1,0 +1,174 @@
+import { NextResponse } from 'next/server'
+import { auth } from '@/auth'
+import { supabase } from '@/lib/supabase'
+import { GoogleGenerativeAI } from '@google/generative-ai'
+
+export const runtime = 'nodejs'
+export const dynamic = 'force-dynamic'
+
+export async function POST(request: Request) {
+  try {
+    const session = await auth()
+
+    if (!session?.user || session.user.role !== 'ADMIN') {
+      return NextResponse.json(
+        { error: 'Unauthorized' },
+        { status: 401 }
+      )
+    }
+
+    const { message, history = [] } = await request.json()
+
+    if (!message) {
+      return NextResponse.json(
+        { error: 'Message is required' },
+        { status: 400 }
+      )
+    }
+
+    // Store conversation in memory
+    const memoryKey = `conversation_${session.user.id}_latest`
+    await supabase
+      .from('AIMemory')
+      .upsert({
+        key: memoryKey,
+        value: message,
+        context: JSON.stringify({ timestamp: new Date().toISOString() }),
+      }, {
+        onConflict: 'key',
+      })
+
+    // Get context from database for better responses
+    const { count: studentCount } = await supabase
+      .from('User')
+      .select('*', { count: 'exact', head: true })
+      .eq('role', 'STUDENT')
+
+    const { count: classCount } = await supabase
+      .from('Class')
+      .select('*', { count: 'exact', head: true })
+      .eq('status', 'SCHEDULED')
+
+    const { count: pendingPayments } = await supabase
+      .from('Payment')
+      .select('*', { count: 'exact', head: true })
+      .eq('status', 'PENDING')
+
+    const { count: approvedStudents } = await supabase
+      .from('User')
+      .select('*', { count: 'exact', head: true })
+      .eq('role', 'STUDENT')
+      .eq('status', 'APPROVED')
+
+    // Build system context
+    const systemContext = `You are an AI assistant for Samayoga, a yoga studio run by Samyuktha Nambiar. 
+You help with administrative tasks. Here's the current system status:
+- Total students: ${studentCount || 0}
+- Approved students: ${approvedStudents || 0}
+- Scheduled classes: ${classCount || 0}
+- Pending payments: ${pendingPayments || 0}
+
+You can help with:
+- Student management and information
+- Class scheduling and details
+- Payment tracking
+- General questions about the yoga studio
+
+Be helpful, professional, and concise.`
+
+    const apiKey = process.env.GOOGLE_API_KEY
+    if (!apiKey) {
+      // Fallback to keyword-based responses if API key not configured
+      let response = "I'm your AI assistant. "
+      
+      const lowerMessage = message.toLowerCase()
+      
+      if (lowerMessage.includes('student') || lowerMessage.includes('students')) {
+        response += `I found ${studentCount || 0} students in the system. `
+      }
+      
+      if (lowerMessage.includes('class') || lowerMessage.includes('classes')) {
+        response += `There are ${classCount || 0} scheduled classes. `
+      }
+      
+      if (lowerMessage.includes('payment') || lowerMessage.includes('payments')) {
+        response += `There are ${pendingPayments || 0} pending payments. `
+      }
+      
+      if (!response.includes('found') && !response.includes('There are')) {
+        response += "I can help you with information about students, classes, and payments. What would you like to know? (Note: Gemini API key not configured - using fallback mode)"
+      }
+
+      // Store response in memory
+      const responseKey = `conversation_${session.user.id}_response_${Date.now()}`
+      await supabase
+        .from('AIMemory')
+        .upsert({
+          key: responseKey,
+          value: response,
+          context: JSON.stringify({ 
+            timestamp: new Date().toISOString(),
+            userMessage: message,
+          }),
+        }, {
+          onConflict: 'key',
+        })
+
+      return NextResponse.json({ response })
+    }
+
+    // Use Gemini API
+    const genAI = new GoogleGenerativeAI(apiKey)
+    const model = genAI.getGenerativeModel({ 
+      model: 'gemini-1.5-flash' // Fast and efficient for chat
+    })
+
+    // Build conversation history
+    const conversationHistory = [
+      { role: 'user', parts: [{ text: systemContext }] },
+      { role: 'model', parts: [{ text: 'I understand. I\'m ready to help with Samayoga administrative tasks.' }] },
+      ...history,
+      { role: 'user', parts: [{ text: message }] },
+    ]
+
+    const result = await model.generateContent({
+      contents: conversationHistory,
+    })
+
+    const response = result.response
+    const responseText = response.text()
+
+    // Store response in memory
+    const responseKey = `conversation_${session.user.id}_response_${Date.now()}`
+    await supabase
+      .from('AIMemory')
+      .upsert({
+        key: responseKey,
+        value: responseText,
+        context: JSON.stringify({ 
+          timestamp: new Date().toISOString(),
+          userMessage: message,
+        }),
+      }, {
+        onConflict: 'key',
+      })
+
+    return NextResponse.json({ response: responseText })
+  } catch (error: any) {
+    console.error('Error in AI chat:', error)
+    
+    // Handle specific API errors
+    if (error.message?.includes('API key')) {
+      return NextResponse.json(
+        { error: 'Invalid API key. Please check your GOOGLE_API_KEY environment variable.', 
+          response: 'I apologize, but there\'s an issue with the API configuration. Please contact the administrator.' },
+        { status: 401 }
+      )
+    }
+
+    return NextResponse.json(
+      { error: 'Failed to process message', response: 'I apologize, but I encountered an error. Please try again.' },
+      { status: 500 }
+    )
+  }
+}
