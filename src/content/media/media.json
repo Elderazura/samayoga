@@ -1,0 +1,66 @@
+{
+  "images": {
+    "landscape": [
+      {
+        "id": "hero",
+        "src": "/assets/images/studio/hero.jpg",
+        "alt": "Yoga practice at Samayoga",
+        "caption": "A space for strength, stillness, and breath"
+      },
+      {
+        "id": "atmosphere",
+        "src": "/assets/images/studio/atmosphere.jpg",
+        "alt": "Studio atmosphere",
+        "caption": "Light, space, and quiet focus"
+      },
+      {
+        "id": "atmosphere-2",
+        "src": "/assets/images/studio/atmosphere-2.jpg",
+        "alt": "Practice room",
+        "caption": "Creating room to move and rest"
+      },
+      {
+        "id": "practice-block",
+        "src": "/assets/images/studio/practice-block.jpg",
+        "alt": "Focused work with props",
+        "caption": "Exploring alignment with care"
+      },
+      {
+        "id": "practice-studio",
+        "src": "/assets/images/studio/practice-studio.jpg",
+        "alt": "Studio practice",
+        "caption": "Moving together in practice"
+      },
+      {
+        "id": "practice-flow",
+        "src": "/assets/images/studio/practice-flow.jpg",
+        "alt": "Flow and movement",
+        "caption": "Breath-led movement"
+      }
+    ],
+    "portrait": [
+      {
+        "id": "teacher",
+        "src": "/assets/images/studio/teacher.jpg",
+        "alt": "Samyuktha in meditation",
+        "caption": "Presence begins with the breath"
+      },
+      {
+        "id": "practice-portrait",
+        "src": "/assets/images/studio/practice-portrait.jpg",
+        "alt": "Grounded yoga practice",
+        "caption": "Steady body, quiet mind"
+      },
+      {
+        "id": "studio-aerial",
+        "src": "/assets/images/studio/studio-aerial.jpg",
+        "alt": "Supported inversion in studio",
+        "caption": "Playful strength in the studio"
+      }
+    ]
+  },
+  "videos": {
+    "landscape": [],
+    "portrait": []
+  }
+}
