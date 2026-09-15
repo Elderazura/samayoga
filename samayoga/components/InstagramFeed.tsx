@@ -1,0 +1,58 @@
+'use client'
+
+import { Instagram } from 'lucide-react'
+import { INSTAGRAM_URL, INSTAGRAM_HANDLE } from '@/lib/social'
+import { InstagramReelsSlider } from '@/components/InstagramReelsSlider'
+
+export function InstagramFeed() {
+  return (
+    <section className="py-12 sm:py-16 md:py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+      <div className="text-center mb-10 sm:mb-12">
+        <h2 className="text-3xl sm:text-4xl font-light mb-3 sm:mb-4">
+          Follow Our Journey
+        </h2>
+        <p className="text-base sm:text-lg text-[#1A1A1A]/70 max-w-2xl mx-auto">
+          Reels-style moments &amp; daily inspiration on Instagram
+        </p>
+      </div>
+
+      <div className="max-w-5xl mx-auto">
+        <div className="flex flex-col lg:flex-row items-stretch lg:items-center justify-center gap-10 lg:gap-14 xl:gap-20">
+          <InstagramReelsSlider />
+
+          <div className="flex flex-col items-center lg:items-start text-center lg:text-left gap-5 shrink-0 lg:max-w-[280px]">
+            <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-primary-200/80 to-primary-100/50 shadow-inner ring-1 ring-primary-200/60">
+              <Instagram className="w-8 h-8 text-primary-800" aria-hidden />
+            </div>
+            <div>
+              <p className="text-xs font-medium uppercase tracking-[0.2em] text-[#1A1A1A]/50 mb-2">
+                On Instagram
+              </p>
+              <a
+                href={INSTAGRAM_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-2xl sm:text-3xl font-light text-primary-700 hover:text-primary-800 transition-colors break-all"
+              >
+                {INSTAGRAM_HANDLE}
+              </a>
+            </div>
+            <p className="text-sm text-[#1A1A1A]/65 leading-relaxed">
+              Clips above are from our portrait library—styled like Reels. Tap the handle for
+              live posts, stories, and more.
+            </p>
+            <a
+              href={INSTAGRAM_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 rounded-full border border-primary-300/80 bg-white/60 px-5 py-2.5 text-sm font-medium text-primary-800 hover:bg-primary-50 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2"
+            >
+              Open profile
+              <span aria-hidden>→</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
