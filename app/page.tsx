@@ -91,10 +91,10 @@ export default function Home() {
       {/* Teacher */}
       <Section>
         <motion.div {...fadeUp} className="mx-auto grid max-w-6xl items-center gap-10 md:grid-cols-2 md:gap-14">
-          <div className="relative aspect-[4/5] overflow-hidden sm:aspect-[5/6]">
+          <div className="relative aspect-[4/5] overflow-hidden">
             <Image
-              src="/assets/images/studio/teacher.jpg"
-              alt="Samyuktha Nambiar — Yoga Teacher"
+              src="/assets/images/studio/teacher-backbend.jpg"
+              alt="Samyuktha Nambiar in a backbend on a jute mat in a garden"
               fill
               className="object-cover object-center"
               sizes="(max-width: 768px) 100vw, 50vw"
