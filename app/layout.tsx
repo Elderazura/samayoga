@@ -21,14 +21,14 @@ const sans = Source_Sans_3({
 })
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://samayoga.com'),
+  metadataBase: new URL('https://www.samayoga.in'),
   title: {
     default: 'Samayoga | Yoga for Wellness with Samyuktha Nambiar',
     template: '%s | Samayoga',
   },
   description: 'Yoga for wellness, movement, and stillness. Hatha and Yin yoga with Samyuktha Nambiar. Find your balance through gentle, grounding practice.',
   keywords: ['Samayoga', 'Yoga', 'Hatha Yoga', 'Yin Yoga', 'Samyuktha Nambiar', 'Wellness', 'Yoga classes', 'Yoga teacher', 'Mindfulness', 'Online yoga', 'Yoga practice'],
-  authors: [{ name: 'Samyuktha Nambiar', url: 'https://samayoga.com' }],
+  authors: [{ name: 'Samyuktha Nambiar', url: 'https://www.samayoga.in' }],
   creator: 'Samyuktha Nambiar',
   publisher: 'Samayoga',
   formatDetection: {
@@ -39,7 +39,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    url: 'https://samayoga.com',
+    url: 'https://www.samayoga.in',
     siteName: 'Samayoga',
     title: 'Samayoga | Yoga for Wellness',
     description: 'Yoga for wellness, movement, and stillness. Hatha and Yin yoga with Samyuktha Nambiar.',
@@ -70,7 +70,7 @@ export const metadata: Metadata = {
     },
   },
   alternates: {
-    canonical: 'https://samayoga.com',
+    canonical: 'https://www.samayoga.in',
   },
   category: 'Wellness',
   classification: 'Health & Wellness',
@@ -86,8 +86,8 @@ export default function RootLayout({
     "@type": "YogaStudio",
     "name": "Samayoga",
     "description": "Yoga for wellness, movement, and stillness. Hatha and Yin yoga with Samyuktha Nambiar.",
-    "url": "https://samayoga.com",
-    "image": "https://samayoga.com/assets/images/og-image.jpg",
+    "url": "https://www.samayoga.in",
+    "image": "https://www.samayoga.in/assets/images/og-image.jpg",
     "founder": {
       "@type": "Person",
       "name": "Samyuktha Nambiar"

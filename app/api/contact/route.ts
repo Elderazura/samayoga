@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { sendContactEmail } from '@/lib/email'
+import { sendContactEmail, sendAcknowledgementEmail } from '@/lib/email'
 import { SAMAYOGA_INBOX_EMAIL } from '@/lib/inbox'
 
 export const runtime = 'nodejs'
@@ -35,6 +35,13 @@ export async function POST(request: Request) {
         { error: 'Could not send message. Please try again later.' },
         { status: 502 }
       )
+    }
+
+    // Best-effort: the message already reached the inbox, so a failed
+    // acknowledgement must not turn this into an error for the visitor.
+    const ack = await sendAcknowledgementEmail({ to: email, name, kind: 'contact' })
+    if (!ack.sent) {
+      console.error('[contact] acknowledgement not sent', ack.reason)
     }
 
     return NextResponse.json({ ok: true })

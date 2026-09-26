@@ -159,3 +159,64 @@ export async function sendRegisterEmail(
   }
   return { sent: true }
 }
+
+/**
+ * Auto-acknowledgement sent to the person who submitted a form.
+ *
+ * Requires RESEND_FROM_EMAIL to be a verified-domain sender. The fallback
+ * `onboarding@resend.dev` can only deliver to the Resend account owner, so
+ * acknowledgements silently fail against it — see getFromEmail().
+ *
+ * Never blocks the submission: callers log and continue on failure, since the
+ * internal notification has already been delivered at that point.
+ */
+export async function sendAcknowledgementEmail(input: {
+  to: string
+  name: string
+  kind: 'contact' | 'register'
+}): Promise<{ sent: boolean; reason?: string }> {
+  const resend = getResend()
+  if (!resend) {
+    return { sent: false, reason: 'not_configured' }
+  }
+
+  const { to, name, kind } = input
+  const firstName = name.split(/\s+/)[0] || name
+
+  const subject =
+    kind === 'register'
+      ? 'We received your Samayoga registration'
+      : 'We received your message'
+
+  const opening =
+    kind === 'register'
+      ? 'Thank you for registering with Samayoga. We have received your details.'
+      : 'Thank you for reaching out to Samayoga. We have received your message.'
+
+  const lines = [
+    `Hi ${firstName},`,
+    '',
+    opening,
+    '',
+    'We will get back to you within 24 hours.',
+    '',
+    `If it is urgent, you can reply to this email or write to ${getNotifyEmail()}.`,
+    '',
+    'Warmly,',
+    'Samayoga',
+  ]
+
+  const { error } = await resend.emails.send({
+    from: getFromEmail(),
+    to: [to],
+    replyTo: getNotifyEmail(),
+    subject,
+    text: lines.join('\n'),
+  })
+
+  if (error) {
+    console.error('[email] acknowledgement send failed', error)
+    return { sent: false, reason: error.message }
+  }
+  return { sent: true }
+}

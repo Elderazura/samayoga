@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { sendRegisterEmail } from '@/lib/email'
+import { sendRegisterEmail, sendAcknowledgementEmail } from '@/lib/email'
 import { SAMAYOGA_INBOX_EMAIL } from '@/lib/inbox'
 
 export const runtime = 'nodejs'
@@ -77,6 +77,13 @@ export async function POST(request: Request) {
         { error: 'Could not send your registration. Please try again later.' },
         { status: 502 }
       )
+    }
+
+    // Best-effort: the registration already reached the inbox, so a failed
+    // acknowledgement must not turn this into an error for the visitor.
+    const ack = await sendAcknowledgementEmail({ to: email, name, kind: 'register' })
+    if (!ack.sent) {
+      console.error('[register] acknowledgement not sent', ack.reason)
     }
 
     return NextResponse.json({ ok: true })

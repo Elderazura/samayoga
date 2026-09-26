@@ -9,7 +9,8 @@ import { YOUTUBE_SHORTS_URL, YOUTUBE_HANDLE } from '@/lib/social'
 import Link from 'next/link'
 import Image from 'next/image'
 import { motion, useReducedMotion } from 'framer-motion'
-import { MediaShield } from '@/components/MediaShield'
+import { HeroMedia } from '@/components/HeroMedia'
+import { HeroFog } from '@/components/HeroFog'
 
 const fadeUp = {
   initial: { opacity: 0, y: 20 },
@@ -25,37 +26,9 @@ export default function Home() {
     <>
       {/* Hero — full-bleed with living image motion */}
       <section className="relative flex min-h-[85vh] items-end overflow-hidden sm:min-h-[90vh]">
-        <motion.div
-          className="absolute inset-0 z-0 will-change-transform"
-          initial={reduceMotion ? false : { scale: 1.08, x: '1%' }}
-          animate={
-            reduceMotion
-              ? { scale: 1.06, x: 0 }
-              : { scale: [1.08, 1.16], x: ['1%', '-1.5%'] }
-          }
-          transition={
-            reduceMotion
-              ? { duration: 0 }
-              : {
-                  duration: 28,
-                  ease: 'linear',
-                  repeat: Infinity,
-                  repeatType: 'reverse',
-                }
-          }
-        >
-          <MediaShield className="absolute inset-0">
-            <Image
-              src="/assets/images/landscape/yoga_1.jpeg"
-              alt="Yoga practice at Samayoga"
-              fill
-              className="object-cover object-center"
-              priority
-              sizes="100vw"
-              draggable={false}
-            />
-          </MediaShield>
-        </motion.div>
+        <HeroMedia />
+
+        <HeroFog className="z-[1]" />
 
         {/* Soft breathing light */}
         <motion.div
@@ -81,25 +54,6 @@ export default function Home() {
           className="absolute inset-0 z-[2] bg-gradient-to-t from-umber/80 via-umber/30 to-primary-900/20"
           aria-hidden
         />
-
-        {!reduceMotion && (
-          <motion.div
-            className="pointer-events-none absolute inset-x-0 bottom-[28%] z-[2] h-24 opacity-30"
-            aria-hidden
-            animate={{ x: ['-8%', '8%'] }}
-            transition={{
-              duration: 22,
-              ease: 'easeInOut',
-              repeat: Infinity,
-              repeatType: 'reverse',
-            }}
-            style={{
-              background:
-                'linear-gradient(90deg, transparent 0%, rgba(244,241,234,0.35) 40%, rgba(244,241,234,0.2) 60%, transparent 100%)',
-              filter: 'blur(28px)',
-            }}
-          />
-        )}
 
         <div className="relative z-10 mx-auto w-full max-w-7xl px-4 pb-16 pt-32 sm:px-6 sm:pb-20 lg:px-8">
           <motion.div
