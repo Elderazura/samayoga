@@ -8,7 +8,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test-email": "tsx scripts/send-test-email.ts"
+    "test-email": "tsx scripts/send-test-email.ts",
+    "check-email": "tsx scripts/check-email-config.ts"
   },
   "dependencies": {
     "@radix-ui/react-slot": "^1.0.2",
